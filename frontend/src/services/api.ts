@@ -11,6 +11,8 @@ import {
   Application,
   CreateApplicationPayload,
   ApplicationStatus,
+  ScreeningResult,
+  InterviewQuestion,
 } from '../types';
 import { getAuthToken } from '../lib/utils';
 
@@ -195,6 +197,31 @@ export class ApiService {
     return this.request<ApiResponse<Application>>(`/applications/${encodeURIComponent(id)}/status`, {
       method: 'PATCH',
       body: JSON.stringify({ status }),
+    });
+  }
+
+  // --- AI Resume Screening & Interview Question APIs (Phase 4) ---
+  static async screenApplication(applicationId: string): Promise<ApiResponse<ScreeningResult>> {
+    return this.request<ApiResponse<ScreeningResult>>(`/screening/${encodeURIComponent(applicationId)}/screen`, {
+      method: 'POST',
+    });
+  }
+
+  static async getScreeningResult(applicationId: string): Promise<ApiResponse<ScreeningResult>> {
+    return this.request<ApiResponse<ScreeningResult>>(`/screening/${encodeURIComponent(applicationId)}/result`, {
+      method: 'GET',
+    });
+  }
+
+  static async generateQuestions(applicationId: string): Promise<ApiResponse<InterviewQuestion>> {
+    return this.request<ApiResponse<InterviewQuestion>>(`/screening/${encodeURIComponent(applicationId)}/questions`, {
+      method: 'POST',
+    });
+  }
+
+  static async getInterviewQuestions(applicationId: string): Promise<ApiResponse<InterviewQuestion>> {
+    return this.request<ApiResponse<InterviewQuestion>>(`/screening/${encodeURIComponent(applicationId)}/questions`, {
+      method: 'GET',
     });
   }
 }

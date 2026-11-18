@@ -4,6 +4,7 @@ import { authRouter } from './modules/auth/auth.routes.js';
 import { jobRouter } from './modules/job/job.routes.js';
 import { candidateRouter } from './modules/candidate/candidate.routes.js';
 import { applicationRouter } from './modules/application/application.routes.js';
+import { screeningRouter } from './modules/screening/screening.routes.js';
 import { authenticate } from './middleware/auth.middleware.js';
 import { authorize } from './middleware/role.middleware.js';
 
@@ -34,6 +35,9 @@ export const createApp = (): Express => {
 
   // Application management routes (Phase 3)
   app.use('/api/applications', applicationRouter);
+
+  // AI Screening and Interview Questions routes (Phase 4)
+  app.use('/api/screening', screeningRouter);
 
   // Role verification verification test routes for Phase 1
   app.get('/api/protected/admin-only', authenticate, authorize('Admin'), (_req: Request, res: Response) => {

@@ -12,14 +12,21 @@ SkillSync is an AI-powered recruitment management platform designed to assist re
                         ▼ (HTTP REST API / JSON + Bearer JWT + Multipart/Form-Data)
 [ Express.js Backend (TypeScript) ]
    ├── Authentication & Role Middleware (JWT + bcrypt)
-   ├── File Upload & Extraction Middleware (Multer + pdf-parse)
-   ├── Input Validation Middleware
+   ├── File Upload & Text Extraction (Multer + pdf-parse)
+   ├── Validation Middleware
    ├── Feature Modules & Controllers:
    │     ├── /api/auth (Login, User session)
    │     ├── /api/jobs (Job creation, updates, deactivation)
    │     ├── /api/candidates (Candidate CRUD, resume PDF upload/parsing)
-   │     └── /api/applications (Job applications linking candidate and job)
-   └── Services Layer (AuthService, JobService, CandidateService, ApplicationService)
+   │     ├── /api/applications (Job applications linking candidate and job)
+   │     └── /api/screening (AI resume screening & interview question generation)
+   └── Services Layer:
+         ├── AuthService
+         ├── JobService
+         ├── CandidateService
+         ├── ApplicationService
+         ├── ScreeningService
+         └── GeminiService (@google/genai)
                         │
          ┌──────────────┴──────────────┐
          ▼                             ▼
@@ -30,31 +37,30 @@ SkillSync is an AI-powered recruitment management platform designed to assist re
  InterviewQuestion)
 ```
 
-## Implemented Architecture (Phases 1, 2 & 3)
+## Implemented Architecture (Phases 1, 2, 3 & 4)
 
 ### 1. Backend Layer (Express.js + TypeScript)
 - **Port:** 5000 (configurable via `PORT`)
 - **Database Connection:** `src/config/database.ts` (Mongoose connection to MongoDB Atlas)
-- **Private Storage:** `backend/uploads/resumes/` stores uploaded PDF resumes securely outside of public web roots.
+- **Private Storage:** `backend/uploads/resumes/` stores uploaded PDF resumes securely.
+- **AI Integration (`@google/genai`):**
+  - Configured through backend environment variable `GEMINI_API_KEY`.
+  - Prompts enforce strict guardrails: resume text is treated as untrusted data; embedded instructions are ignored; only explicitly verified skills are matched.
+  - JSON Schema enforcement guarantees structured responses without hallucinations.
 - **Middleware:**
   - `authenticate`: Validates JWT token from `Authorization: Bearer <token>`.
   - `authorize(...roles)`: Enforces role permissions (`Admin`, `Recruiter`).
-  - `resumeUpload`: Multer middleware enforcing a 10MB file-size limit and validating PDF mime-type/extension.
-  - `PdfExtractor`: Validates PDF `%PDF-` file header and extracts plain text content using `pdf-parse`.
-  - Validation middleware for input sanitization and MongoDB ID formats.
+  - `resumeUpload`: Multer middleware enforcing 10MB file-size limit and validating PDF mime-type.
+  - `validateMongoId`: Ensures valid MongoDB ObjectId format.
 
 ### 2. Frontend Layer (Next.js 14 + React + TypeScript + Tailwind CSS)
 - **Port:** 3000
 - **App Router (`src/app`):**
   - `/login`: Clean login page with test credential quick-fill.
-  - `/dashboard`: Protected dashboard with user session metrics, role verification, and quick links.
+  - `/dashboard`: Protected dashboard with user session metrics and quick links.
   - `/jobs`: Job listing, create, edit, view, and deactivation.
   - `/candidates`: Candidate listing with search, skill filtering, pagination, and resume attachment indicators.
   - `/candidates/add`: Form to add new candidate contact info, skills, and experience.
-  - `/candidates/[id]`: Candidate profile displaying details, parsed resume content, and associated job applications.
-  - `/applications`: Application management view to link candidates with jobs, view applicant statuses, and update hiring pipeline stages.
-- **Shared Components & Services:**
-  - `Navbar`: Global navigation header with links to Dashboard, Jobs, Candidates, and Applications.
-  - `ResumeUploadModal`: Modal for uploading PDF resumes with live file validation and feedback.
-  - `CandidateForm` & `JobForm`: Reusable form components with validation.
-  - `ApiService`: Typed HTTP client managing token authentication and multipart file uploads.
+  - `/candidates/[id]`: Candidate profile displaying details, parsed resume content, and associated applications.
+  - `/applications`: Application management view to link candidates with jobs and update statuses.
+  - `/applications/[id]`: Complete application review view offering one-click AI Resume Screening and Interview Question generation with comprehensive structured visual feedback.

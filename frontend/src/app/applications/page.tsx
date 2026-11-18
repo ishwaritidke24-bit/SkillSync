@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { Navbar } from '../../components/Navbar';
 import { ApiService } from '../../services/api';
@@ -125,7 +126,7 @@ function ApplicationsContent() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Applications</h1>
           <p className="text-sm text-slate-500 mt-0.5">
-            Track candidate submissions, link applicants to jobs, and update hiring pipeline status.
+            Track candidate submissions, run AI screening, and generate interview questions.
           </p>
         </div>
         <button
@@ -221,19 +222,23 @@ function ApplicationsContent() {
                   <th className="px-6 py-3.5">Job Position</th>
                   <th className="px-6 py-3.5">Applied Date</th>
                   <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5 text-right">Update Status</th>
+                  <th className="px-6 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-sm">
                 {applications.map((app) => (
                   <tr key={app._id} className="hover:bg-slate-50/70 transition">
                     <td className="px-6 py-4">
-                      <p className="font-semibold text-slate-900">{app.candidate?.name || 'Unknown Candidate'}</p>
+                      <Link href={`/candidates/${app.candidate?._id}`} className="font-semibold text-slate-900 hover:text-teal-600">
+                        {app.candidate?.name || 'Unknown Candidate'}
+                      </Link>
                       <p className="text-xs text-slate-500">{app.candidate?.email}</p>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-semibold text-slate-900">{app.job?.title || 'Unknown Position'}</p>
-                      <span className={`text-xs uppercase font-medium ${app.job?.status === 'active' ? 'text-emerald-600' : 'text-slate-400'}`}>
+                      <Link href={`/jobs/${app.job?._id}`} className="font-semibold text-slate-900 hover:text-teal-600">
+                        {app.job?.title || 'Unknown Position'}
+                      </Link>
+                      <span className={`text-xs uppercase font-medium block ${app.job?.status === 'active' ? 'text-emerald-600' : 'text-slate-400'}`}>
                         {app.job?.status || 'active'}
                       </span>
                     </td>
@@ -241,22 +246,11 @@ function ApplicationsContent() {
                       {new Date(app.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider ${
-                        app.status === 'applied' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
-                        app.status === 'screening' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-                        app.status === 'interview' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' :
-                        app.status === 'offered' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                        'bg-slate-100 text-slate-600 border border-slate-200'
-                      }`}>
-                        {app.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
                       <select
                         value={app.status}
                         disabled={updatingId === app._id}
                         onChange={(e) => handleStatusChange(app._id, e.target.value as ApplicationStatus)}
-                        className="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 font-medium text-slate-700 cursor-pointer disabled:opacity-50"
+                        className="text-xs px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold text-slate-800 cursor-pointer disabled:opacity-50 uppercase"
                       >
                         {statuses.map((st) => (
                           <option key={st} value={st}>
@@ -264,6 +258,17 @@ function ApplicationsContent() {
                           </option>
                         ))}
                       </select>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <Link
+                        href={`/applications/${app._id}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 text-xs font-semibold rounded-lg transition"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        Review & AI Screen
+                      </Link>
                     </td>
                   </tr>
                 ))}

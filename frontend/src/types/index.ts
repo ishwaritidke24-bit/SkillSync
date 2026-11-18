@@ -107,6 +107,34 @@ export interface CreateApplicationPayload {
   status?: ApplicationStatus;
 }
 
+// --- AI Screening & Interview Question Types ---
+
+export interface ScreeningResult {
+  _id: string;
+  application: string;
+  matchingSkills: string[];
+  missingSkills: string[];
+  experienceAnalysis: string;
+  explanation: string;
+  summary: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InterviewQuestionItem {
+  question: string;
+  category: string;
+  context?: string;
+}
+
+export interface InterviewQuestion {
+  _id: string;
+  application: string;
+  questions: InterviewQuestionItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PaginationMeta {
   total: number;
   page: number;
