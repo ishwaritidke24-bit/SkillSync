@@ -7,200 +7,173 @@ Base URL: `http://localhost:5000/api`
 ## 1. Authentication Endpoints
 
 ### `POST /auth/login`
-Authenticates an Admin or Recruiter and returns a signed JWT.
-
 - **Access:** Public
-- **Request Headers:** `Content-Type: application/json`
-- **Request Body:**
-```json
-{
-  "email": "recruiter@skillsync.com",
-  "password": "Recruiter@123456"
-}
-```
-- **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Login successful",
-  "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "user": {
-      "id": "673b889396e95c479428ad10",
-      "email": "recruiter@skillsync.com",
-      "name": "Senior Recruiter",
-      "role": "Recruiter"
-    }
-  }
-}
-```
+- **Body:** `{ "email": "admin@skillsync.com", "password": "Admin@123456" }`
+- **Success (200 OK):** Returns JWT token and user profile.
 
 ### `GET /auth/me`
-Retrieves information about the currently logged-in user.
-
 - **Access:** Protected (`Admin`, `Recruiter`)
 - **Headers:** `Authorization: Bearer <token>`
-- **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "id": "673b889396e95c479428ad10",
-    "email": "recruiter@skillsync.com",
-    "name": "Senior Recruiter",
-    "role": "Recruiter"
-  }
-}
-```
+- **Success (200 OK):** Returns current user information.
 
 ---
 
 ## 2. Job Management Endpoints
 
-All job endpoints require an authenticated user (`Admin` or `Recruiter`) via JWT Bearer token.
+- `GET /jobs` - List all jobs (supports `?status=active|deactivated`)
+- `GET /jobs/:id` - Get job details by MongoDB ID
+- `POST /jobs` - Create job
+- `PUT /jobs/:id` - Update job
+- `PATCH /jobs/:id/deactivate` - Deactivate job
 
-### `GET /jobs`
-Retrieves all jobs, sorted by creation date descending.
+---
+
+## 3. Candidate Management Endpoints
+
+All candidate endpoints require an authenticated user (`Admin` or `Recruiter`).
+
+### `GET /candidates`
+Retrieves paginated candidates with optional search and skill filtering.
 
 - **Access:** Protected (`Admin`, `Recruiter`)
 - **Query Parameters:**
-  - `status` (optional): `active` | `deactivated`
+  - `search` (optional): Search by name or email
+  - `skill` (optional): Filter by skill keyword
+  - `page` (optional): Page number (default: 1)
+  - `limit` (optional): Results per page (default: 10)
 - **Headers:** `Authorization: Bearer <token>`
-- **Success Response (200 OK):**
+- **Success (200 OK):**
 ```json
 {
   "success": true,
-  "count": 1,
   "data": [
     {
-      "_id": "6afdc8e6aacff30c3f3c2dc9",
-      "title": "Senior Full Stack Engineer",
-      "description": "Lead full-stack development using Node.js, React, and MongoDB.",
-      "requiredSkills": ["React", "Node.js", "TypeScript", "MongoDB"],
-      "experienceMin": 3,
-      "experienceMax": 6,
-      "status": "active",
-      "createdAt": "2026-11-18T15:48:48.000Z",
-      "updatedAt": "2026-11-18T15:48:48.000Z"
+      "_id": "6afdcbe5b4a8509fa364bd48",
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com",
+      "phone": "+1-555-0199",
+      "skills": ["React", "TypeScript", "Node.js"],
+      "experienceYears": 4,
+      "resume": {
+        "_id": "6afdcc6bdf6f19ced7e6039a",
+        "fileName": "Jane_Doe_Resume.pdf",
+        "fileSize": 1048576,
+        "mimeType": "application/pdf"
+      },
+      "createdAt": "2026-11-18T16:00:00.000Z"
     }
-  ]
-}
-```
-
----
-
-### `GET /jobs/:id`
-Retrieves details of an individual job by its MongoDB ID.
-
-- **Access:** Protected (`Admin`, `Recruiter`)
-- **Headers:** `Authorization: Bearer <token>`
-- **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "_id": "6afdc8e6aacff30c3f3c2dc9",
-    "title": "Senior Full Stack Engineer",
-    "description": "Lead full-stack development using Node.js, React, and MongoDB.",
-    "requiredSkills": ["React", "Node.js", "TypeScript", "MongoDB"],
-    "experienceMin": 3,
-    "experienceMax": 6,
-    "status": "active",
-    "createdAt": "2026-11-18T15:48:48.000Z",
-    "updatedAt": "2026-11-18T15:48:48.000Z"
-  }
-}
-```
-- **Error Responses:**
-  - `400 Bad Request`: Invalid MongoDB ID format.
-  - `404 Not Found`: Job not found.
-
----
-
-### `POST /jobs`
-Creates a new job posting.
-
-- **Access:** Protected (`Admin`, `Recruiter`)
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Request Body:**
-```json
-{
-  "title": "Full Stack Engineer",
-  "description": "Responsible for designing and implementing recruitment APIs.",
-  "requiredSkills": ["React", "Node.js", "TypeScript", "MongoDB"],
-  "experienceMin": 2,
-  "experienceMax": 5,
-  "status": "active"
-}
-```
-- **Validation Rules:**
-  - `title`: String, required, non-empty.
-  - `description`: String, required, non-empty.
-  - `requiredSkills`: Array of non-empty strings, required.
-  - `experienceMin`: Number >= 0, required.
-  - `experienceMax`: Number >= experienceMin, required.
-  - `status`: Optional (`active` | `deactivated`), default `active`.
-- **Success Response (201 Created):**
-```json
-{
-  "success": true,
-  "message": "Job created successfully",
-  "data": {
-    "_id": "6afdc92c6544a958a4197788",
-    "title": "Full Stack Engineer",
-    "description": "Responsible for designing and implementing recruitment APIs.",
-    "requiredSkills": ["React", "Node.js", "TypeScript", "MongoDB"],
-    "experienceMin": 2,
-    "experienceMax": 5,
-    "status": "active",
-    "createdAt": "2026-11-18T15:50:00.000Z",
-    "updatedAt": "2026-11-18T15:50:00.000Z"
+  ],
+  "pagination": {
+    "total": 1,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 1
   }
 }
 ```
 
----
-
-### `PUT /jobs/:id`
-Updates an existing job.
+### `GET /candidates/:id`
+Retrieves complete candidate profile, parsed resume metadata, and associated applications.
 
 - **Access:** Protected (`Admin`, `Recruiter`)
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Request Body:** (any subset of fields)
-```json
-{
-  "title": "Lead Full Stack Engineer",
-  "experienceMax": 7
-}
-```
-- **Success Response (200 OK):**
+- **Success (200 OK):**
 ```json
 {
   "success": true,
-  "message": "Job updated successfully",
-  "data": { ... }
-}
-```
-
----
-
-### `PATCH /jobs/:id/deactivate`
-Deactivates a job posting (sets `status` to `deactivated` without deleting the record).
-
-- **Access:** Protected (`Admin`, `Recruiter`)
-- **Headers:** `Authorization: Bearer <token>`
-- **Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Job deactivated successfully",
   "data": {
-    "_id": "6afdc8e6aacff30c3f3c2dc9",
-    "status": "deactivated"
+    "candidate": { ... },
+    "resume": {
+      "_id": "...",
+      "fileName": "Resume.pdf",
+      "fileSize": 45020,
+      "extractedText": "Extracted plain text resume content..."
+    },
+    "applications": [ ... ]
   }
 }
 ```
+
+### `POST /candidates`
+Creates a new candidate record.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Body:**
+```json
+{
+  "name": "Alex Morgan",
+  "email": "alex.morgan@example.com",
+  "phone": "+1-555-0123",
+  "skills": ["Python", "Docker", "Node.js"],
+  "experienceYears": 3
+}
+```
+- **Success (201 Created):** Returns created candidate document.
+
+### `PUT /candidates/:id`
+Updates candidate fields.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Success (200 OK):** Returns updated candidate document.
+
+### `DELETE /candidates/:id`
+Deletes candidate and automatically cleans up associated applications and stored resume files.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Success (200 OK):** `{ "success": true, "message": "Candidate and associated data deleted successfully" }`
+
+### `POST /candidates/:id/resume`
+Uploads a PDF resume, parses its text, and associates it with the candidate.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Content-Type:** `multipart/form-data`
+- **Field:** `resume` (File, max 10MB, PDF only)
+- **Success (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Resume uploaded and processed successfully",
+  "data": {
+    "_id": "6afdcc6bdf6f19ced7e6039a",
+    "fileName": "Alex_Morgan_Resume.pdf",
+    "fileSize": 45020,
+    "mimeType": "application/pdf",
+    "extractedTextLength": 2400
+  }
+}
+```
+
+---
+
+## 4. Application Management Endpoints
+
+### `GET /applications`
+Retrieves all applications.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Query Parameters:**
+  - `status` (optional): `applied` | `screening` | `interview` | `offered` | `rejected`
+  - `candidateId` (optional): Filter applications for a specific candidate
+  - `jobId` (optional): Filter applications for a specific job
+- **Success (200 OK):** Returns array of populated application documents.
+
+### `POST /applications`
+Links a candidate to a job opening.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Body:**
+```json
+{
+  "candidateId": "6afdcbe5b4a8509fa364bd48",
+  "jobId": "6afdc8e6aacff30c3f3c2dc9",
+  "status": "applied"
+}
+```
+- **Success (201 Created):** Returns created application.
+- **Error (400 Bad Request):** If candidate or job does not exist, or if application is a duplicate.
+
+### `PATCH /applications/:id/status`
+Updates an application's stage independently.
+
+- **Access:** Protected (`Admin`, `Recruiter`)
+- **Body:** `{ "status": "interview" }`
+- **Success (200 OK):** Returns updated application document.

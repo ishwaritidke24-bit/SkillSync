@@ -8,9 +8,9 @@ SkillSync strictly utilizes seven MongoDB collections as defined in the system a
 |---|---|---|---|
 | 1 | `users` | Admin and Recruiter credentials and role assignments | **Implemented (Phase 1)** |
 | 2 | `jobs` | Job postings, required skills, and experience criteria | **Implemented (Phase 2)** |
-| 3 | `candidates` | Candidate profiles, contact details, and skill sets | Phase 3 |
-| 4 | `applications` | Application links connecting candidates to specific jobs | Phase 3 |
-| 5 | `resumes` | Private resume metadata and extracted text content | Phase 3 |
+| 3 | `candidates` | Candidate profiles, contact details, and skill sets | **Implemented (Phase 3)** |
+| 4 | `applications` | Application links connecting candidates to specific jobs | **Implemented (Phase 3)** |
+| 5 | `resumes` | Private resume metadata and extracted text content | **Implemented (Phase 3)** |
 | 6 | `screeningresults` | AI evaluation, matching criteria, and gap explanations | Phase 4 |
 | 7 | `interviewquestions` | AI-generated interview questions per application | Phase 4 |
 
@@ -19,8 +19,6 @@ SkillSync strictly utilizes seven MongoDB collections as defined in the system a
 ## Detailed Collection Definitions
 
 ### 1. `User` (Implemented in Phase 1)
-Stores administrative and recruiter accounts.
-
 ```typescript
 {
   _id: ObjectId,
@@ -34,8 +32,6 @@ Stores administrative and recruiter accounts.
 ```
 
 ### 2. `Job` (Implemented in Phase 2)
-Stores job recruitment positions, required skill arrays, experience thresholds, and status.
-
 ```typescript
 {
   _id: ObjectId,
@@ -50,47 +46,50 @@ Stores job recruitment positions, required skill arrays, experience thresholds, 
 }
 ```
 
-### 3. `Candidate` (Scheduled for Phase 3)
+### 3. `Candidate` (Implemented in Phase 3)
+Stores candidate contact information, skills array, experience, and resume reference.
 ```typescript
 {
   _id: ObjectId,
-  name: string,
-  email: string,
-  phone?: string,
-  skills: string[],
-  experienceYears?: number,
+  name: string,                  // required, trimmed
+  email: string,                 // required, unique, lowercase, trimmed
+  phone?: string,                // optional, trimmed
+  skills: string[],              // required, non-empty array
+  experienceYears: number,       // required, min: 0
+  resume?: ObjectId,             // ref: Resume, default: null
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-### 4. `Application` (Scheduled for Phase 3)
+### 4. `Resume` (Implemented in Phase 3)
+Stores private file metadata and plain text parsed from the uploaded PDF.
+```typescript
+{
+  _id: ObjectId,
+  candidate: ObjectId,           // ref: Candidate, required, unique
+  fileName: string,              // original uploaded file name
+  filePath: string,              // private server storage path (uploads/resumes/...)
+  mimeType: string,              // 'application/pdf'
+  fileSize: number,              // bytes
+  extractedText: string,         // plain text extracted by pdf-parse
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### 5. `Application` (Implemented in Phase 3)
 Links one candidate to a specific job with an independent status.
 ```typescript
 {
   _id: ObjectId,
-  candidateId: ObjectId, // ref: Candidate
-  jobId: ObjectId,       // ref: Job
-  status: 'applied' | 'screening' | 'interview' | 'offered' | 'rejected',
+  candidate: ObjectId,           // ref: Candidate, required
+  job: ObjectId,                 // ref: Job, required
+  status: 'applied' | 'screening' | 'interview' | 'offered' | 'rejected', // default: 'applied'
   createdAt: Date,
   updatedAt: Date
 }
-```
-
-### 5. `Resume` (Scheduled for Phase 3)
-Stores private file metadata and parsed text content.
-```typescript
-{
-  _id: ObjectId,
-  candidateId: ObjectId, // ref: Candidate
-  fileName: string,
-  filePath: string,      // private storage path
-  mimeType: string,
-  fileSize: number,
-  extractedText: string,
-  createdAt: Date,
-  updatedAt: Date
-}
+// Unique compound index: { candidate: 1, job: 1 } prevents duplicate submissions
 ```
 
 ### 6. `ScreeningResult` (Scheduled for Phase 4)
@@ -98,7 +97,7 @@ Stores Gemini AI screening outputs.
 ```typescript
 {
   _id: ObjectId,
-  applicationId: ObjectId, // ref: Application
+  application: ObjectId, // ref: Application
   matchingSkills: string[],
   missingSkills: string[],
   experienceAnalysis: string,
@@ -113,7 +112,7 @@ Stores tailored questions for candidate interviews.
 ```typescript
 {
   _id: ObjectId,
-  applicationId: ObjectId, // ref: Application
+  application: ObjectId, // ref: Application
   questions: Array<{
     question: string,
     category: string,
