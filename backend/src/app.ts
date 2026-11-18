@@ -1,6 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { authRouter } from './modules/auth/auth.routes.js';
+import { jobRouter } from './modules/job/job.routes.js';
 import { authenticate } from './middleware/auth.middleware.js';
 import { authorize } from './middleware/role.middleware.js';
 
@@ -22,6 +23,9 @@ export const createApp = (): Express => {
 
   // Authentication routes
   app.use('/api/auth', authRouter);
+
+  // Job management routes
+  app.use('/api/jobs', jobRouter);
 
   // Role verification verification test routes for Phase 1
   app.get('/api/protected/admin-only', authenticate, authorize('Admin'), (_req: Request, res: Response) => {

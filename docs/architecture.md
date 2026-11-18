@@ -12,8 +12,11 @@ SkillSync is an AI-powered recruitment management platform designed to assist re
                         ▼ (HTTP REST API / JSON + Bearer JWT)
 [ Express.js Backend (TypeScript) ]
    ├── Authentication & Role Middleware
-   ├── Input Validation
-   └── Feature Modules & Controllers
+   ├── Input Validation Middleware
+   ├── Feature Modules & Controllers:
+   │     ├── /api/auth (Login, User identity)
+   │     └── /api/jobs (Job creation, retrieval, updates, deactivation)
+   └── Services Layer (AuthService, JobService)
                         │
          ┌──────────────┴──────────────┐
          ▼                             ▼
@@ -24,32 +27,40 @@ SkillSync is an AI-powered recruitment management platform designed to assist re
  InterviewQuestion)
 ```
 
-## Phase 1 Implementation Architecture
+## Implemented Architecture (Phases 1 & 2)
 
 ### 1. Backend Layer (Express.js + TypeScript)
 - **Port:** 5000 (configurable via `PORT`)
-- **Database Connector:** `src/config/database.ts` (Mongoose connection to MongoDB)
-- **Authentication Service:** `src/services/auth.service.ts`
-  - Validates user credentials with `bcrypt.compare`
-  - Generates signed JWTs containing `userId` and `role`
-- **Security & Authorization Middleware:**
-  - `authenticate` in `src/middleware/auth.middleware.ts`: Validates JWT token from `Authorization: Bearer <token>`
-  - `authorize(...roles)` in `src/middleware/role.middleware.ts`: Enforces role-based permissions (`Admin`, `Recruiter`)
-  - `validateLoginInput` in `src/middleware/validation.middleware.ts`: Sanitizes and validates login payload
-- **Routes:**
-  - `POST /api/auth/login`: Public login endpoint for Admin and Recruiter
-  - `GET /api/auth/me`: Protected route returning active authenticated user identity
-  - `GET /api/protected/authenticated`: Verifies general token authentication
-  - `GET /api/protected/admin-only`: Verifies Admin role enforcement
-  - `GET /api/protected/recruiter-only`: Verifies Recruiter role enforcement
+- **Database Connection:** `src/config/database.ts` (Mongoose connection to MongoDB)
+- **Middleware:**
+  - `authenticate`: Validates JWT token from `Authorization: Bearer <token>`.
+  - `authorize(...roles)`: Enforces role permissions (`Admin`, `Recruiter`).
+  - `validateLoginInput`: Sanitizes and validates login credentials.
+  - `validateJobInput`: Validates job creation payload (title, description, requiredSkills, experience range, status).
+  - `validateJobUpdateInput`: Validates optional update fields.
+  - `validateMongoId`: Ensures valid MongoDB ObjectId format for parameter routes.
+- **Modules & Routes:**
+  - **Auth (`/api/auth`):**
+    - `POST /api/auth/login`: Authenticates Admin or Recruiter.
+    - `GET /api/auth/me`: Returns current user session.
+  - **Jobs (`/api/jobs`):**
+    - `GET /api/jobs`: Retrieves all jobs (with optional status query filter).
+    - `GET /api/jobs/:id`: Retrieves individual job details.
+    - `POST /api/jobs`: Creates a new job posting.
+    - `PUT /api/jobs/:id`: Updates an existing job.
+    - `PATCH /api/jobs/:id/deactivate`: Deactivates a job posting.
 
 ### 2. Frontend Layer (Next.js 14 + React + TypeScript + Tailwind CSS)
 - **Port:** 3000
-- **App Router:** `src/app`
-  - `/login`: Clean login page with credentials validation and quick testing buttons
-  - `/dashboard`: Protected landing page verifying session and role permissions
-  - `/`: Automatic redirect to `/dashboard` if authenticated, `/login` otherwise
-- **State & Service Layer:**
-  - `useAuth`: React hook handling session lifecycle, login, and logout
-  - `ApiService`: Centralized typed fetch client that automatically attaches the Bearer token
-  - `ProtectedRoute`: Route guard component redirecting unauthenticated users and blocking unauthorized roles
+- **App Router (`src/app`):**
+  - `/login`: Clean login page with test credential quick-fill.
+  - `/dashboard`: Protected dashboard with user session metrics, role verification, and quick links to recent jobs.
+  - `/jobs`: Job listing page with status filter (`all`, `active`, `deactivated`), job cards, and action buttons.
+  - `/jobs/create`: Create job form with real-time validation and error/success alerts.
+  - `/jobs/[id]`: Job details view displaying title, description, skills badges, experience range, and status.
+  - `/jobs/[id]/edit`: Form pre-populated with existing job details for updating.
+- **Shared Components & Services:**
+  - `Navbar`: Global navigation header displaying active routes, user name, and role.
+  - `JobForm`: Reusable job creation/edit form component.
+  - `ProtectedRoute`: Route guard component ensuring authenticated access.
+  - `ApiService`: Typed HTTP client managing Bearer token transmission.

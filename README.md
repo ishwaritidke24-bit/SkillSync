@@ -55,10 +55,10 @@ SkillSync/
 
 ---
 
-## Prerequisites
+## Completed Phases
 
-1. **Node.js**: v18.x or v20.x or v22.x
-2. **MongoDB**: Local MongoDB instance (`mongodb://127.0.0.1:27017/skillsync`) or MongoDB Atlas URI
+- **Phase 1:** Project Setup, Database Connection, Authentication, Role-Based Access Control (`Admin`, `Recruiter`).
+- **Phase 2:** Job Management (Job model, REST CRUD APIs, validation, deactivation, and Next.js frontend pages for job listing, creation, editing, and details).
 
 ---
 
@@ -68,7 +68,7 @@ SkillSync/
 Copy `backend/.env.example` to `backend/.env`:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://127.0.0.1:27017/skillsync
+MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=skillsync_jwt_super_secret_key_development_2026
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:3000
@@ -90,14 +90,14 @@ cd backend
 npm install
 npm run build
 
-# Seed initial Admin and Recruiter accounts (ensure MongoDB is running):
+# Seed initial Admin and Recruiter accounts:
 npx tsx src/utils/seed.ts
 
 # Start backend server:
 npm run dev
 # or for production: npm start
 ```
-The backend server runs at `http://localhost:5000`.
+The backend server runs on `http://localhost:5000`.
 
 ### 2. Frontend Setup
 ```bash
@@ -105,7 +105,7 @@ cd frontend
 npm install
 npm run dev
 ```
-The Next.js frontend application runs at `http://localhost:3000`.
+The Next.js frontend application runs on `http://localhost:3000`.
 
 ---
 

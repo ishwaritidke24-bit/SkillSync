@@ -7,7 +7,7 @@ SkillSync strictly utilizes seven MongoDB collections as defined in the system a
 | # | Collection | Description | Status |
 |---|---|---|---|
 | 1 | `users` | Admin and Recruiter credentials and role assignments | **Implemented (Phase 1)** |
-| 2 | `jobs` | Job postings, required skills, and experience criteria | Phase 2 |
+| 2 | `jobs` | Job postings, required skills, and experience criteria | **Implemented (Phase 2)** |
 | 3 | `candidates` | Candidate profiles, contact details, and skill sets | Phase 3 |
 | 4 | `applications` | Application links connecting candidates to specific jobs | Phase 3 |
 | 5 | `resumes` | Private resume metadata and extracted text content | Phase 3 |
@@ -33,17 +33,18 @@ Stores administrative and recruiter accounts.
 }
 ```
 
-### 2. `Job` (Scheduled for Phase 2)
+### 2. `Job` (Implemented in Phase 2)
+Stores job recruitment positions, required skill arrays, experience thresholds, and status.
+
 ```typescript
 {
   _id: ObjectId,
-  title: string,
-  description: string,
-  requiredSkills: string[],
-  experienceMin: number,
-  experienceMax: number,
-  status: 'active' | 'deactivated',
-  createdBy: ObjectId, // ref: User
+  title: string,                 // required, trimmed
+  description: string,           // required, trimmed
+  requiredSkills: string[],      // required, non-empty array of skill strings
+  experienceMin: number,         // required, min: 0
+  experienceMax: number,         // required, min: experienceMin
+  status: 'active' | 'deactivated', // default: 'active'
   createdAt: Date,
   updatedAt: Date
 }
