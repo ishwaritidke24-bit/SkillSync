@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SkillSync – AI-Powered Recruitment Management Platform',
-  description: 'Streamlined recruitment management and AI-assisted screening',
+  title: 'SkillSync – Chromatic Intelligence & Recruitment Analytics',
+  description: 'Connected recruitment intelligence powered by multi-dimensional AI screening',
 };
 
 export default function RootLayout({
@@ -13,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">{children}</body>
+      <body className="min-h-screen bg-canvas text-charcoal antialiased selection:bg-lavender selection:text-plum-900">
+        {children}
+      </body>
     </html>
   );
 }

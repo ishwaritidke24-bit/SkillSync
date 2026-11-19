@@ -18,16 +18,16 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
 
   const navigation = [
     {
-      name: 'Overview',
+      name: 'Executive Overview',
       href: '/dashboard',
       icon: (
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
         </svg>
       ),
     },
     {
-      name: 'Positions',
+      name: 'Position Matrix',
       href: '/jobs',
       icon: (
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,7 +45,7 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
       ),
     },
     {
-      name: 'Applications',
+      name: 'Pipeline & Evidence',
       href: '/applications',
       icon: (
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,174 +56,224 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
   ];
 
   return (
-    <div className="min-h-screen bg-canvas text-text-primary flex flex-col md:flex-row">
-      {/* DESKTOP EDITORIAL SIDEBAR (248px) */}
-      <aside className="hidden md:flex flex-col w-[248px] bg-surface border-r border-border-neutral flex-shrink-0 h-screen sticky top-0 z-40 select-none">
-        {/* Brand Header */}
-        <div className="h-16 px-6 flex items-center border-b border-border-neutral">
-          <Link href="/dashboard" className="flex items-center gap-3 group">
-            <SignalLogo size={26} theme="light" />
+    <div className="min-h-screen bg-canvas text-charcoal flex flex-col md:flex-row relative overflow-hidden">
+      {/* Chromatic Luxury Ambient Gradient Atmosphere Behind Entire App */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Top-Right Plum/Burgundy Ambient Radiance */}
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-plum-600/10 via-burgundy-700/10 to-transparent blur-3xl animate-synapse-glow" />
+        {/* Bottom-Left Rose/Violet Ambient Radiance */}
+        <div className="absolute -bottom-40 -left-40 w-[650px] h-[650px] rounded-full bg-gradient-to-tr from-violet-rich/10 via-magenta-rose/10 to-transparent blur-3xl" />
+        {/* Subtle Horizontal Gradient Shift Band */}
+        <div className="absolute top-1/3 left-1/4 w-[800px] h-[350px] bg-gradient-to-r from-royal/5 via-burgundy/5 to-transparent blur-3xl transform -rotate-12" />
+      </div>
+
+      {/* DESKTOP CHROMATIC LUXURY SIDEBAR (260px) */}
+      <aside className="hidden md:flex flex-col w-[260px] bg-gradient-to-b from-[#1F102B] via-[#241333] to-[#17151F] text-lavender-soft border-r border-plum-800/40 flex-shrink-0 h-screen sticky top-0 z-40 select-none shadow-2xl">
+        {/* Brand Header with Rich Plum & Rose Accent */}
+        <div className="h-20 px-6 flex items-center justify-between border-b border-plum-700/30 bg-plum-950/40 backdrop-blur-md">
+          <Link href="/dashboard" className="flex items-center gap-3.5 group">
+            <div className="p-1.5 rounded-xl bg-plum-900/80 border border-plum-700/50 shadow-glow-violet transition-transform group-hover:scale-105">
+              <SignalLogo size={24} theme="dark" />
+            </div>
             <div className="flex flex-col">
-              <span className="font-bold text-sm tracking-tight text-text-primary uppercase letter-spacing-wide">
+              <span className="font-editorial text-xl tracking-wide text-white leading-none">
                 SkillSync
               </span>
-              <span className="text-[10px] text-text-secondary tracking-tight font-medium -mt-0.5">
-                Workspace
+              <span className="font-mono text-[9.5px] uppercase tracking-widest text-magenta-rose mt-1">
+                Chromatic AI
               </span>
             </div>
           </Link>
         </div>
 
         {/* Navigation Section */}
-        <div className="flex-1 py-6 px-3 space-y-1">
-          <div className="px-3 pb-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary/70">
-              Navigation
+        <div className="flex-1 py-7 px-3.5 space-y-1.5 overflow-y-auto">
+          <div className="px-3 pb-2.5 flex items-center justify-between">
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-lavender/60">
+              Workspace Hub
             </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-magenta-rose animate-pulse" />
           </div>
+
           {navigation.map((item) => {
-            const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+            const isActive =
+              pathname === item.href ||
+              (item.href !== '/dashboard' && pathname.startsWith(item.href));
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-medium transition-all duration-200 group relative ${
                   isActive
-                    ? 'bg-soft-violet text-brand font-semibold shadow-subtle'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-canvas'
+                    ? 'bg-gradient-to-r from-plum-700/80 to-burgundy-800/80 text-white font-semibold shadow-glow-magenta border border-magenta-muted/40'
+                    : 'text-lavender/80 hover:text-white hover:bg-plum-800/40 hover:border-plum-700/30 border border-transparent'
                 }`}
               >
-                <span className={isActive ? 'text-brand' : 'text-text-secondary'}>
+                <span
+                  className={`transition-colors duration-200 ${
+                    isActive ? 'text-magenta-rose' : 'text-lavender/70 group-hover:text-magenta-rose'
+                  }`}
+                >
                   {item.icon}
                 </span>
-                <span>{item.name}</span>
+                <span className="tracking-wide">{item.name}</span>
                 {isActive && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-brand" />
+                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-magenta-rose shadow-glow-rose" />
                 )}
               </Link>
             );
           })}
-        </div>
 
-        {/* Evidence Lens Shortcut Banner */}
-        <div className="p-3 mx-3 mb-4 rounded-xl bg-gradient-to-br from-void to-void-panel text-white p-3.5 border border-void-border">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="w-2 h-2 rounded-full bg-ion-cyan animate-pulse" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-ion-cyan">
-              Evidence Lens
-            </span>
-          </div>
-          <p className="text-[11px] text-text-lens-muted leading-tight">
-            Cinematic AI screening active for reviewed applicants.
-          </p>
-        </div>
-
-        {/* User Profile & Sign Out Footer */}
-        <div className="p-4 border-t border-border-neutral bg-surface-subtle">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center font-bold text-xs">
-                {user?.name ? user.name[0].toUpperCase() : 'U'}
+          {/* Evidence Lens Direct Action Card */}
+          <div className="pt-6 px-1">
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-plum-900/90 via-burgundy-900/60 to-charcoal-950/80 border border-plum-600/30 shadow-lg relative overflow-hidden group">
+              <div className="absolute -right-6 -bottom-6 w-20 h-20 bg-magenta-muted/20 rounded-full blur-xl group-hover:scale-125 transition-transform" />
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-lens-cyan animate-pulse" />
+                <span className="font-mono text-[10px] uppercase font-bold tracking-wider text-lens-cyan">
+                  Evidence Lens
+                </span>
               </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-text-primary truncate">
-                  {user?.name || 'Recruiter'}
-                </p>
-                <p className="text-[10px] text-text-secondary truncate">
-                  {user?.role || 'Admin'}
-                </p>
-              </div>
+              <p className="text-[11px] text-lavender/70 leading-relaxed mb-3">
+                Cinematic deep claim verification & Gemini AI question engine.
+              </p>
+              <Link
+                href="/applications"
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-magenta-rose hover:text-white transition-colors"
+              >
+                Inspect Submissions →
+              </Link>
             </div>
-            <button
-              onClick={logout}
-              title="Sign Out"
-              className="p-1.5 text-text-secondary hover:text-text-primary hover:bg-white rounded-lg transition"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-            </button>
           </div>
+        </div>
+
+        {/* User Identity / Role Footer */}
+        <div className="p-4 border-t border-plum-800/40 bg-plum-950/60 backdrop-blur-md">
+          {user && (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-rich via-magenta-muted to-burgundy text-white flex items-center justify-center font-bold text-xs font-mono shadow-md flex-shrink-0 border border-lavender/20">
+                  {user.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-white truncate">{user.name}</p>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-mono text-[10px] text-magenta-rose font-medium uppercase">
+                      {user.role}
+                    </span>
+                    <span className="text-lavender/30">•</span>
+                    <span className="text-[10px] font-mono text-lavender/60 truncate">
+                      {user.email}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={logout}
+                title="Sign out of SkillSync"
+                className="p-2 text-lavender/60 hover:text-white hover:bg-plum-800/60 rounded-lg transition"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
       </aside>
 
-      {/* MOBILE TOP BAR (md:hidden) */}
-      <div className="md:hidden bg-surface border-b border-border-neutral px-4 h-16 flex items-center justify-between sticky top-0 z-40">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <SignalLogo size={24} theme="light" />
-          <span className="font-bold text-sm tracking-tight text-text-primary uppercase">
-            SkillSync
-          </span>
-        </Link>
-        <div className="flex items-center gap-2">
-          {headerAction}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-text-secondary hover:text-text-primary rounded-lg"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-            </svg>
-          </button>
+      {/* MOBILE CHROMATIC HEADER */}
+      <div className="md:hidden flex items-center justify-between p-4 bg-gradient-to-r from-plum-950 via-burgundy-900 to-plum-900 text-white border-b border-plum-800/40 z-30 sticky top-0 shadow-lg">
+        <div className="flex items-center gap-3">
+          <SignalLogo size={24} theme="dark" />
+          <span className="font-editorial text-lg tracking-wide text-white">SkillSync</span>
         </div>
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 rounded-xl bg-plum-800/60 border border-plum-700/50 text-lavender"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            {mobileMenuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
       </div>
 
-      {/* MOBILE DROPDOWN MENU */}
+      {/* MOBILE DRAWER */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-surface border-b border-border-neutral p-4 space-y-2 sticky top-16 z-30 shadow-card">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-text-primary hover:bg-canvas"
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </Link>
-          ))}
-          <div className="pt-2 border-t border-border-neutral flex items-center justify-between">
-            <span className="text-xs text-text-secondary">{user?.name} ({user?.role})</span>
-            <button
-              onClick={logout}
-              className="text-xs text-brand font-semibold underline"
-            >
-              Sign out
-            </button>
+        <div className="md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col">
+          <div className="bg-gradient-to-b from-plum-950 via-plum-900 to-charcoal-950 p-6 flex flex-col h-full border-r border-plum-700/40 w-4/5 max-w-sm">
+            <div className="flex items-center justify-between pb-6 border-b border-plum-800/40">
+              <div className="flex items-center gap-3">
+                <SignalLogo size={24} theme="dark" />
+                <span className="font-editorial text-xl text-white">SkillSync</span>
+              </div>
+              <button onClick={() => setMobileMenuOpen(false)} className="text-lavender">
+                ✕
+              </button>
+            </div>
+            <div className="py-6 space-y-2 flex-1">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium ${
+                    pathname === item.href
+                      ? 'bg-gradient-to-r from-plum-700 to-burgundy text-white font-semibold'
+                      : 'text-lavender hover:bg-plum-800/40'
+                  }`}
+                >
+                  {item.icon}
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </div>
+            {user && (
+              <div className="pt-4 border-t border-plum-800/40 flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-bold text-white">{user.name}</p>
+                  <p className="text-[10px] font-mono text-magenta-rose">{user.role}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="px-3 py-1.5 text-xs bg-burgundy-900 text-rose-300 rounded-lg border border-burgundy-700"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* MAIN VIEWPORT */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* DESKTOP TOP BAR (64px) */}
-        <header className="hidden md:flex h-16 bg-surface/80 backdrop-blur-md border-b border-border-neutral px-8 items-center justify-between sticky top-0 z-30">
+      {/* MAIN WORKSPACE VIEWPORT (Tinted Mauve Canvas with Subtle Chromatic Depth) */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10">
+        {/* Top Floating Glass Command Ribbon */}
+        <header className="sticky top-0 z-30 h-16 px-6 lg:px-10 bg-canvas/80 backdrop-blur-md border-b border-neutral-muted/80 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary/70">
-              SkillSync Platform
-            </span>
-            <span className="text-border-neutral">•</span>
-            <span className="text-xs font-medium text-text-secondary">
-              Recruitment Intelligence, Connected.
-            </span>
+            <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-charcoal-600">
+              <span className="w-2 h-2 rounded-full bg-magenta-muted"></span>
+              <span>ENVIRONMENT:</span>
+              <span className="px-2 py-0.5 rounded-md bg-plum-100 text-plum-900 font-semibold border border-plum-200">
+                CHROMATIC WORKSPACE
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
-            {headerAction}
-            <div className="h-4 w-px bg-border-neutral" />
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-soft-mint text-emerald-800 border border-emerald-200/50">
-                Live System
-              </span>
-              <span className="text-xs font-medium text-text-secondary">
-                {user?.name}
-              </span>
-            </div>
+            {headerAction && <div>{headerAction}</div>}
           </div>
         </header>
 
         {/* Content Container */}
-        <main className="flex-1 p-6 sm:p-8 max-w-[1440px] w-full mx-auto">
+        <main className="flex-1 p-6 sm:p-8 lg:p-10 max-w-7xl w-full mx-auto space-y-8">
           {children}
         </main>
       </div>

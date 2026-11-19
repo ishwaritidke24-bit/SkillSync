@@ -1,90 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --canvas: #F5F4EF;
-  --surface: #FFFFFF;
-  --text-primary: #171923;
-  --text-secondary: #747786;
-  --brand: #5949D6;
-  --neutral-border: #EAECEF;
+  /* Chromatic Luxury Roots */
+  --color-plum: #241333;
+  --color-royal: #49306F;
+  --color-burgundy: #54243F;
+  --color-violet: #7550A8;
+  --color-magenta: #A74778;
+  --color-rose: #D58B9B;
+  --color-charcoal: #17151F;
+  --color-lavender: #D8C7EB;
+  --color-champagne: #D7BEA0;
+  --color-neutral-muted: #E8E1E9;
+  --color-canvas-lux: #FAF6FA;
 }
 
 body {
-  color: var(--text-primary);
-  background-color: var(--canvas);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #17151F;
+  background-color: var(--color-canvas-lux);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbars */
+/* Custom Scrollbars in Chromatic Luxury */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(36, 19, 51, 0.03);
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8DCE2;
+  background: #D8C7EB;
   border-radius: 9999px;
+  border: 1px solid rgba(117, 80, 168, 0.2);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B6BAC3;
+  background: #A74778;
 }
 
-/* Dark Evidence Lens Scrollbars */
+/* Evidence Lens Cinematic Scrollbars */
+.evidence-lens-theme ::-webkit-scrollbar-track {
+  background: #0E0D14;
+}
 .evidence-lens-theme ::-webkit-scrollbar-thumb {
-  background: #27314D;
+  background: #41245C;
+  border: 1px solid rgba(167, 139, 250, 0.3);
 }
 .evidence-lens-theme ::-webkit-scrollbar-thumb:hover {
-  background: #3B486D;
+  background: #7550A8;
 }
 
-/* Animations & Keyframes */
-@keyframes ambientGlow {
+/* Luxury Keyframes & Atmospheric Glows */
+@keyframes ambientSynapse {
   0%, 100% {
-    opacity: 0.35;
-    transform: scale(1);
+    opacity: 0.45;
+    transform: scale(1) translateY(0);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(1.08);
+    opacity: 0.75;
+    transform: scale(1.05) translateY(-6px);
   }
 }
 
-@keyframes pulseSubtle {
+@keyframes pulseChromatic {
   0%, 100% {
-    opacity: 0.8;
+    opacity: 0.85;
+    box-shadow: 0 0 15px rgba(167, 71, 120, 0.3);
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 16px rgba(101, 231, 218, 0.4);
+    box-shadow: 0 0 25px rgba(213, 139, 155, 0.6);
   }
 }
 
-@keyframes beamFlow {
+@keyframes beamSynapseFlow {
   0% {
-    stroke-dashoffset: 40;
+    stroke-dashoffset: 60;
   }
   100% {
     stroke-dashoffset: 0;
   }
 }
 
-.animate-ambient-glow {
-  animation: ambientGlow 12s ease-in-out infinite;
+.animate-synapse-glow {
+  animation: ambientSynapse 10s ease-in-out infinite;
 }
 
-.animate-pulse-subtle {
-  animation: pulseSubtle 3s ease-in-out infinite;
+.animate-pulse-chromatic {
+  animation: pulseChromatic 3.5s ease-in-out infinite;
 }
 
-.animate-beam-flow {
+.animate-beam-synapse {
   stroke-dasharray: 6 6;
-  animation: beamFlow 2s linear infinite;
+  animation: beamSynapseFlow 2.4s linear infinite;
+}
+
+/* Instrument Serif Heading Utility */
+.font-editorial {
+  font-family: 'Instrument Serif', Georgia, serif;
+}
+
+/* IBM Plex Mono Technical Utility */
+.font-tech {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
 }
 
 /* Reduced motion preference */

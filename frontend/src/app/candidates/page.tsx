@@ -107,37 +107,37 @@ export default function CandidatesPage() {
         headerAction={
           <Link
             href="/candidates/add"
-            className="px-3.5 py-1.5 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition flex items-center gap-1.5"
+            className="px-4 py-2 bg-gradient-to-r from-plum via-burgundy to-royal text-white text-xs font-mono font-semibold tracking-wider uppercase rounded-xl shadow-glow-magenta hover:opacity-95 transition flex items-center gap-2"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
-            <span>Add Candidate</span>
+            <span>Onboard Talent</span>
           </Link>
         }
       >
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border-neutral pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border-luxury">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-brand">
-                Talent Pool Directory
+              <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-magenta-muted">
+                Talent Repository
               </span>
-              <h1 className="text-3xl font-extrabold text-text-primary tracking-tight mt-1">
-                Candidate Profiles.
+              <h1 className="font-editorial text-3xl sm:text-4xl font-bold text-plum-950 mt-1">
+                Candidate Dossiers.
               </h1>
-              <p className="text-sm text-text-secondary mt-1">
-                Manage talent profiles, attached PDF resumes, skills, and linked job submissions.
+              <p className="text-xs sm:text-sm text-charcoal-600 mt-1">
+                Explore candidate claims, experience timelines, parsed resume files, and linked job submissions.
               </p>
             </div>
 
-            <div className="text-xs font-medium text-text-secondary self-start sm:self-auto">
-              Total Talents: <span className="font-bold text-text-primary">{pagination.total}</span>
+            <div className="font-mono text-xs text-charcoal-600 self-start sm:self-auto">
+              Total Talents Ingested: <span className="font-bold text-plum-950">{pagination.total}</span>
             </div>
           </div>
 
           {/* Search & Filter Toolbar */}
-          <div className="bg-surface p-4 rounded-2xl border border-border-neutral shadow-subtle flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-border-luxury shadow-luxury-subtle flex flex-col md:flex-row gap-3 items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1">
               <div className="relative flex-1 max-w-sm">
                 <input
@@ -148,23 +148,23 @@ export default function CandidatesPage() {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full pl-9 pr-3.5 py-2 text-xs bg-canvas/40 border border-border-neutral rounded-xl text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
+                  className="w-full pl-9 pr-3.5 py-2.5 text-xs font-mono bg-neutral-tinted border border-border-luxury rounded-xl text-plum-950 placeholder:text-charcoal-600/60 focus:outline-none focus:ring-2 focus:ring-plum-600 focus:bg-white transition"
                 />
-                <svg className="w-4 h-4 text-text-tertiary absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4 text-charcoal-600 absolute left-3 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
 
-              <div className="w-full sm:w-48">
+              <div className="w-full sm:w-56">
                 <input
                   type="text"
-                  placeholder="Filter by skill..."
+                  placeholder="Filter by skill (e.g. React)..."
                   value={skillFilter}
                   onChange={(e) => {
                     setSkillFilter(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full px-3.5 py-2 text-xs bg-canvas/40 border border-border-neutral rounded-xl text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
+                  className="w-full px-3.5 py-2.5 text-xs font-mono bg-neutral-tinted border border-border-luxury rounded-xl text-plum-950 placeholder:text-charcoal-600/60 focus:outline-none focus:ring-2 focus:ring-plum-600 focus:bg-white transition"
                 />
               </div>
             </div>
@@ -172,36 +172,36 @@ export default function CandidatesPage() {
 
           {/* Error */}
           {error && (
-            <div className="p-4 bg-soft-coral border border-coral/30 rounded-2xl text-xs text-red-800 flex items-center justify-between">
+            <div className="p-4 bg-burgundy-soft border border-burgundy-700/30 rounded-2xl text-xs text-burgundy-950 flex items-center justify-between">
               <span>{error}</span>
-              <button onClick={() => fetchCandidates()} className="font-semibold underline text-red-900">Retry</button>
+              <button onClick={() => fetchCandidates()} className="font-mono underline font-bold">Retry</button>
             </div>
           )}
 
           {/* Loading */}
           {loading && (
-            <div className="py-24 flex flex-col items-center justify-center">
-              <div className="w-10 h-10 border-3 border-brand border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm font-medium text-text-secondary mt-4">Loading talent pool...</p>
+            <div className="py-24 flex flex-col items-center justify-center bg-white/80 rounded-3xl border border-border-luxury shadow-luxury-subtle">
+              <div className="w-10 h-10 border-2 border-plum-600 border-t-transparent rounded-full animate-spin" />
+              <p className="text-xs font-mono text-charcoal-600 mt-4">Retrieving talent pool records...</p>
             </div>
           )}
 
           {/* Empty */}
           {!loading && !error && candidates.length === 0 && (
-            <div className="text-center py-20 bg-surface rounded-2xl border border-border-neutral shadow-subtle p-8">
-              <div className="w-12 h-12 rounded-xl bg-canvas text-brand mx-auto flex items-center justify-center mb-3 border border-border-neutral">
+            <div className="text-center py-20 bg-white/80 rounded-3xl border border-border-luxury shadow-luxury-subtle p-8">
+              <div className="w-12 h-12 rounded-2xl bg-neutral-tinted text-plum mx-auto flex items-center justify-center mb-3 border border-border-luxury">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              <h3 className="text-base font-bold text-text-primary">No candidate profiles found</h3>
-              <p className="text-sm text-text-secondary mt-1 max-w-sm mx-auto">
-                {searchTerm || skillFilter ? 'No candidates match your current filter criteria.' : 'Start expanding your recruitment pipeline by onboarding candidate profiles.'}
+              <h3 className="font-editorial text-2xl font-bold text-plum-950">No candidate profiles found</h3>
+              <p className="text-xs text-charcoal-600 mt-1 max-w-sm mx-auto">
+                {searchTerm || skillFilter ? 'No candidates match your current filter query.' : 'Start expanding your talent roster by onboarding candidates with PDF resumes.'}
               </p>
               <div className="mt-5">
                 <Link
                   href="/candidates/add"
-                  className="px-4 py-2 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition inline-block"
+                  className="px-4 py-2 bg-gradient-to-r from-plum to-burgundy text-white text-xs font-mono uppercase font-semibold rounded-xl shadow-glow-magenta inline-block"
                 >
                   Onboard Candidate
                 </Link>
@@ -209,50 +209,50 @@ export default function CandidatesPage() {
             </div>
           )}
 
-          {/* Split-View Talent Workspace (Desktop Split, Mobile Stacked) */}
+          {/* Split-View Talent Workspace */}
           {!loading && !error && candidates.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               {/* Left Column: Candidate List (7 Cols) */}
-              <div className="lg:col-span-7 bg-surface rounded-2xl border border-border-neutral shadow-subtle overflow-hidden">
-                <div className="divide-y divide-border-neutral">
+              <div className="lg:col-span-7 bg-white/95 backdrop-blur-md rounded-3xl border border-border-luxury shadow-luxury-subtle overflow-hidden">
+                <div className="divide-y divide-border-luxury">
                   {candidates.map((cand) => {
                     const isSelected = selectedCandidateId === cand._id;
                     return (
                       <div
                         key={cand._id}
                         onClick={() => setSelectedCandidateId(cand._id)}
-                        className={`p-4 sm:p-5 transition-colors cursor-pointer ${
+                        className={`p-4 sm:p-5 transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-soft-violet/40 border-l-4 border-l-brand'
-                            : 'hover:bg-canvas/50'
+                            ? 'bg-plum-100/50 border-l-4 border-l-plum-700'
+                            : 'hover:bg-neutral-tinted/60'
                         }`}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                              <h3 className="font-bold text-sm text-text-primary truncate">
+                              <h3 className="font-bold text-sm text-plum-950 truncate">
                                 {cand.name}
                               </h3>
                               {cand.resume ? (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-soft-mint text-emerald-900 border border-emerald-200">
-                                  Resume Attached
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-plum-100 text-plum-900 border border-plum-200">
+                                  PDF Attached
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-canvas text-text-secondary border border-border-neutral">
-                                  No Resume
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono text-charcoal-600 bg-neutral-tinted border border-border-luxury">
+                                  No Document
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-text-secondary mt-0.5 truncate">{cand.email}</p>
+                            <p className="text-xs text-charcoal-600 mt-0.5 truncate font-mono">{cand.email}</p>
 
                             <div className="flex flex-wrap gap-1 mt-2.5">
                               {cand.skills.slice(0, 4).map((sk, idx) => (
-                                <span key={idx} className="px-2 py-0.5 bg-canvas rounded text-[11px] font-medium text-text-primary border border-border-neutral">
+                                <span key={idx} className="px-2 py-0.5 bg-white rounded text-[11px] font-mono font-medium text-plum-950 border border-border-luxury">
                                   {sk}
                                 </span>
                               ))}
                               {cand.skills.length > 4 && (
-                                <span className="text-[11px] text-text-tertiary self-center">
+                                <span className="text-[11px] font-mono text-magenta-muted self-center">
                                   +{cand.skills.length - 4}
                                 </span>
                               )}
@@ -260,15 +260,15 @@ export default function CandidatesPage() {
                           </div>
 
                           <div className="text-right flex-shrink-0">
-                            <span className="text-xs font-bold text-text-primary">
+                            <span className="text-xs font-mono font-bold text-plum-950 block">
                               {cand.experienceYears} {cand.experienceYears === 1 ? 'yr' : 'yrs'}
                             </span>
                             <div className="mt-2 flex items-center justify-end gap-1">
                               <Link
                                 href={`/candidates/${cand._id}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="p-1.5 text-text-secondary hover:text-brand hover:bg-surface rounded-lg transition"
-                                title="Open Full Profile"
+                                className="p-1.5 text-charcoal-600 hover:text-plum-950 hover:bg-plum-100/60 rounded-lg transition"
+                                title="Open Full Dossier"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -279,7 +279,7 @@ export default function CandidatesPage() {
                                   e.stopPropagation();
                                   handleDelete(cand._id, cand.name);
                                 }}
-                                className="p-1.5 text-text-secondary hover:text-red-700 hover:bg-surface rounded-lg transition"
+                                className="p-1.5 text-charcoal-600 hover:text-burgundy hover:bg-burgundy-soft rounded-lg transition"
                                 title="Delete Candidate"
                               >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -296,108 +296,105 @@ export default function CandidatesPage() {
 
                 {/* Pagination */}
                 {pagination.totalPages > 1 && (
-                  <div className="p-4 border-t border-border-neutral flex items-center justify-between bg-surface-subtle">
+                  <div className="p-4 border-t border-border-luxury flex items-center justify-between bg-neutral-tinted/40 text-xs font-mono">
                     <button
-                      disabled={currentPage <= 1}
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                      className="px-3 py-1.5 border border-border-neutral rounded-xl text-xs font-semibold text-text-secondary hover:text-text-primary bg-surface disabled:opacity-40"
+                      disabled={currentPage <= 1}
+                      className="px-3 py-1.5 bg-white border border-border-luxury rounded-lg font-semibold disabled:opacity-40"
                     >
-                      Previous
+                      ← Previous
                     </button>
-                    <span className="text-xs text-text-secondary">
+                    <span className="text-charcoal-600">
                       Page {pagination.page} of {pagination.totalPages}
                     </span>
                     <button
-                      disabled={currentPage >= pagination.totalPages}
                       onClick={() => setCurrentPage((p) => Math.min(pagination.totalPages, p + 1))}
-                      className="px-3 py-1.5 border border-border-neutral rounded-xl text-xs font-semibold text-text-secondary hover:text-text-primary bg-surface disabled:opacity-40"
+                      disabled={currentPage >= pagination.totalPages}
+                      className="px-3 py-1.5 bg-white border border-border-luxury rounded-lg font-semibold disabled:opacity-40"
                     >
-                      Next
+                      Next →
                     </button>
                   </div>
                 )}
               </div>
 
-              {/* Right Column: Selected Candidate Quick Preview Panel (5 Cols) */}
-              <div className="lg:col-span-5 bg-surface rounded-2xl border border-border-neutral p-6 shadow-subtle sticky top-24">
+              {/* Right Column: Candidate Quick Dossier Inspector (5 Cols) */}
+              <div className="lg:col-span-5 bg-white/95 backdrop-blur-md rounded-3xl border border-border-luxury p-6 shadow-luxury-subtle sticky top-24">
                 {detailLoading ? (
                   <div className="py-20 flex flex-col items-center justify-center">
-                    <div className="w-8 h-8 border-3 border-brand border-t-transparent rounded-full animate-spin" />
-                    <p className="text-xs font-medium text-text-secondary mt-3">Loading details...</p>
+                    <div className="w-8 h-8 border-2 border-plum-600 border-t-transparent rounded-full animate-spin" />
+                    <p className="text-xs font-mono text-charcoal-600 mt-3">Loading dossier snapshot...</p>
                   </div>
-                ) : !selectedCandidateDetail ? (
-                  <div className="text-center py-20 text-text-secondary text-xs">
-                    Select a candidate profile from the directory to inspect details.
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    {/* Header */}
-                    <div className="border-b border-border-neutral pb-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-brand">
-                          Candidate Summary
+                ) : selectedCandidateDetail ? (
+                  <div className="space-y-5">
+                    <div className="flex items-start justify-between gap-3 pb-4 border-b border-border-luxury">
+                      <div>
+                        <span className="font-mono text-[10px] uppercase font-bold text-magenta-muted">
+                          Candidate Overview
                         </span>
-                        <Link
-                          href={`/candidates/${selectedCandidateDetail.candidate._id}`}
-                          className="text-xs font-semibold text-brand hover:underline"
-                        >
-                          View Full Dossier →
-                        </Link>
+                        <h2 className="font-editorial text-2xl font-bold text-plum-950 mt-0.5">
+                          {selectedCandidateDetail.candidate.name}
+                        </h2>
+                        <p className="text-xs font-mono text-charcoal-600 mt-0.5">
+                          {selectedCandidateDetail.candidate.email}
+                        </p>
                       </div>
-                      <h2 className="text-xl font-bold text-text-primary mt-1">
-                        {selectedCandidateDetail.candidate.name}
-                      </h2>
-                      <p className="text-xs text-text-secondary">
-                        {selectedCandidateDetail.candidate.email}
-                        {selectedCandidateDetail.candidate.phone && ` • ${selectedCandidateDetail.candidate.phone}`}
-                      </p>
+                      <Link
+                        href={`/candidates/${selectedCandidateDetail.candidate._id}`}
+                        className="px-3 py-1.5 rounded-xl bg-plum-100 hover:bg-plum-200 text-plum-950 text-xs font-mono font-semibold transition"
+                      >
+                        Full Profile →
+                      </Link>
                     </div>
 
-                    {/* Stated Skills */}
+                    {/* Stats Pill */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-2xl bg-neutral-tinted border border-border-luxury">
+                        <span className="font-mono text-[10px] uppercase text-charcoal-600 block">Experience</span>
+                        <span className="text-base font-bold text-plum-950 font-mono">
+                          {selectedCandidateDetail.candidate.experienceYears} Years
+                        </span>
+                      </div>
+                      <div className="p-3 rounded-2xl bg-neutral-tinted border border-border-luxury">
+                        <span className="font-mono text-[10px] uppercase text-charcoal-600 block">Submissions</span>
+                        <span className="text-base font-bold text-plum-950 font-mono">
+                          {selectedCandidateDetail.applications?.length || 0} Open
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Competency Badges */}
                     <div>
-                      <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary mb-2">
-                        Stated Competencies
-                      </h4>
+                      <span className="font-mono text-[10px] uppercase font-bold text-charcoal-600 block mb-2">
+                        Core Competencies ({selectedCandidateDetail.candidate.skills.length})
+                      </span>
                       <div className="flex flex-wrap gap-1.5">
-                        {selectedCandidateDetail.candidate.skills.map((sk: string, i: number) => (
-                          <span key={i} className="px-2.5 py-1 bg-canvas text-text-primary text-xs font-medium rounded-lg border border-border-neutral">
-                            {sk}
+                        {selectedCandidateDetail.candidate.skills.map((skill: string, idx: number) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white text-plum-950 border border-border-luxury shadow-2xs"
+                          >
+                            {skill}
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    {/* Experience Info */}
-                    <div>
-                      <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary mb-1">
-                        Industry Experience
-                      </h4>
-                      <p className="text-sm font-extrabold text-text-primary">
-                        {selectedCandidateDetail.candidate.experienceYears} Years Verified
-                      </p>
-                    </div>
-
-                    {/* Resume Snapshot */}
-                    <div className="p-4 rounded-xl bg-canvas/60 border border-border-neutral space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
-                          Resume Document
-                        </span>
-                        {selectedCandidateDetail.resume && (
-                          <span className="text-[10px] font-semibold text-emerald-800 bg-soft-mint px-2 py-0.5 rounded border border-emerald-200">
-                            Parsed
-                          </span>
-                        )}
-                      </div>
-
+                    {/* Resume Card & Action */}
+                    <div className="pt-3 border-t border-border-luxury">
+                      <span className="font-mono text-[10px] uppercase font-bold text-charcoal-600 block mb-2">
+                        Resume Document Status
+                      </span>
                       {selectedCandidateDetail.resume ? (
-                        <div className="space-y-2">
-                          <p className="text-xs font-semibold text-text-primary truncate">
-                            {selectedCandidateDetail.resume.fileName}
-                          </p>
-                          <p className="text-[11px] text-text-secondary">
-                            Document size: {(selectedCandidateDetail.resume.fileSize / 1024).toFixed(1)} KB
-                          </p>
+                        <div className="p-3.5 rounded-2xl bg-plum-100/50 border border-plum-200 flex items-center justify-between gap-3">
+                          <div className="min-w-0">
+                            <span className="text-xs font-bold text-plum-950 block truncate">
+                              {selectedCandidateDetail.resume.fileName}
+                            </span>
+                            <span className="text-[10px] font-mono text-charcoal-600">
+                              {(selectedCandidateDetail.resume.fileSize / 1024).toFixed(1)} KB • Ingested
+                            </span>
+                          </div>
                           <button
                             onClick={() =>
                               setUploadCandidate({
@@ -405,14 +402,14 @@ export default function CandidatesPage() {
                                 name: selectedCandidateDetail.candidate.name,
                               })
                             }
-                            className="text-xs font-semibold text-brand hover:underline"
+                            className="px-2.5 py-1 text-xs font-mono font-semibold text-plum-900 bg-white border border-plum-200 rounded-lg hover:bg-plum-100 transition flex-shrink-0"
                           >
-                            Upload updated version
+                            Update
                           </button>
                         </div>
                       ) : (
-                        <div>
-                          <p className="text-xs text-text-secondary mb-3">No PDF resume on file.</p>
+                        <div className="p-4 rounded-2xl bg-neutral-tinted border-2 border-dashed border-border-luxury text-center">
+                          <p className="text-xs text-charcoal-600 mb-2 font-mono">No resume attached.</p>
                           <button
                             onClick={() =>
                               setUploadCandidate({
@@ -420,39 +417,18 @@ export default function CandidatesPage() {
                                 name: selectedCandidateDetail.candidate.name,
                               })
                             }
-                            className="w-full py-2 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition"
+                            className="px-3 py-1.5 bg-gradient-to-r from-plum to-burgundy text-white text-xs font-mono font-semibold rounded-xl shadow-sm"
                           >
                             Upload PDF Resume
                           </button>
                         </div>
                       )}
                     </div>
-
-                    {/* Associated Applications */}
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
-                          Active Applications ({selectedCandidateDetail.applications.length})
-                        </h4>
-                      </div>
-                      {selectedCandidateDetail.applications.length === 0 ? (
-                        <p className="text-xs text-text-secondary italic">No active job applications submitted.</p>
-                      ) : (
-                        <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                          {selectedCandidateDetail.applications.map((app: any) => (
-                            <div key={app._id} className="p-3 bg-canvas/40 border border-border-neutral rounded-xl flex items-center justify-between">
-                              <span className="text-xs font-bold text-text-primary truncate max-w-[180px]">
-                                {app.job?.title || 'Position'}
-                              </span>
-                              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-surface border border-border-neutral text-text-secondary">
-                                {app.status}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
                   </div>
+                ) : (
+                  <p className="text-xs font-mono text-charcoal-600 text-center py-10">
+                    Select a candidate on the left to preview their dossier snapshot.
+                  </p>
                 )}
               </div>
             </div>
@@ -463,9 +439,11 @@ export default function CandidatesPage() {
             <ResumeUploadModal
               candidateId={uploadCandidate.id}
               candidateName={uploadCandidate.name}
-              isOpen={!!uploadCandidate}
+              isOpen={Boolean(uploadCandidate)}
               onClose={() => setUploadCandidate(null)}
-              onUploadSuccess={fetchCandidates}
+              onUploadSuccess={() => {
+                fetchCandidates();
+              }}
             />
           )}
         </div>

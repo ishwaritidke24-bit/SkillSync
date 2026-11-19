@@ -59,40 +59,40 @@ export default function JobsPage() {
         headerAction={
           <Link
             href="/jobs/create"
-            className="px-3.5 py-1.5 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition flex items-center gap-1.5"
+            className="px-4 py-2 bg-gradient-to-r from-plum via-burgundy to-royal text-white text-xs font-mono font-semibold tracking-wider uppercase rounded-xl shadow-glow-magenta hover:opacity-95 transition flex items-center gap-2"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
             </svg>
-            <span>Post Opening</span>
+            <span>Create Position</span>
           </Link>
         }
       >
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border-neutral pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border-luxury">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-brand">
-                Vacancies Directory
+              <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-magenta-muted">
+                Requisition Matrix
               </span>
-              <h1 className="text-3xl font-extrabold text-text-primary tracking-tight mt-1">
-                Open Positions.
+              <h1 className="font-editorial text-3xl sm:text-4xl font-bold text-plum-950 mt-1">
+                Position Specifications.
               </h1>
-              <p className="text-sm text-text-secondary mt-1">
-                Manage recruitment criteria, skill definitions, and experience baselines.
+              <p className="text-xs sm:text-sm text-charcoal-600 mt-1">
+                Configure talent requirements, experience bounds, and core competency blueprints for Gemini AI comparison.
               </p>
             </div>
 
             {/* Filter Toggle Segment */}
-            <div className="flex items-center gap-1 bg-surface p-1 rounded-xl border border-border-neutral shadow-subtle self-start sm:self-auto">
+            <div className="flex items-center gap-1 bg-white/90 p-1.5 rounded-xl border border-border-luxury shadow-luxury-subtle self-start sm:self-auto">
               {['all', 'active', 'deactivated'].map((st) => (
                 <button
                   key={st}
                   onClick={() => setStatusFilter(st)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg capitalize transition-all ${
+                  className={`px-3.5 py-1.5 text-xs font-mono font-semibold rounded-lg capitalize transition-all ${
                     statusFilter === st
-                      ? 'bg-brand text-white shadow-subtle'
-                      : 'text-text-secondary hover:text-text-primary hover:bg-canvas'
+                      ? 'bg-gradient-to-r from-plum to-burgundy text-white shadow-sm'
+                      : 'text-charcoal-600 hover:text-plum-950 hover:bg-neutral-tinted'
                   }`}
                 >
                   {st}
@@ -101,44 +101,40 @@ export default function JobsPage() {
             </div>
           </div>
 
+          {/* Loading */}
+          {loading && (
+            <div className="py-24 flex flex-col items-center justify-center bg-white/80 rounded-3xl border border-border-luxury shadow-luxury-subtle">
+              <div className="w-10 h-10 border-2 border-plum-600 border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-xs font-mono text-charcoal-600 mt-4">Retrieving active specifications...</p>
+            </div>
+          )}
+
           {/* Error */}
           {error && (
-            <div className="p-4 bg-soft-coral border border-coral/30 rounded-2xl text-sm text-red-800 flex items-center justify-between">
+            <div className="p-4 bg-burgundy-soft border border-burgundy-700/30 rounded-2xl text-xs text-burgundy-950 flex items-center justify-between">
               <span>{error}</span>
-              <button onClick={() => fetchJobs(statusFilter)} className="text-xs font-semibold underline text-red-900">
+              <button onClick={() => fetchJobs(statusFilter)} className="font-mono underline font-bold">
                 Retry
               </button>
             </div>
           )}
 
-          {/* Loading */}
-          {loading && (
-            <div className="py-24 flex flex-col items-center justify-center">
-              <div className="w-10 h-10 border-3 border-brand border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm font-medium text-text-secondary mt-4">
-                Loading job positions...
-              </p>
-            </div>
-          )}
-
-          {/* Empty */}
+          {/* Empty State */}
           {!loading && !error && jobs.length === 0 && (
-            <div className="text-center py-20 bg-surface rounded-2xl border border-border-neutral shadow-subtle p-8">
-              <div className="w-12 h-12 rounded-xl bg-canvas text-brand mx-auto flex items-center justify-center mb-3 border border-border-neutral">
+            <div className="text-center py-20 bg-white/80 rounded-3xl border border-border-luxury shadow-luxury-subtle p-8">
+              <div className="w-12 h-12 rounded-2xl bg-neutral-tinted text-plum flex items-center justify-center mx-auto mb-3 border border-border-luxury">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-base font-bold text-text-primary">No positions found</h3>
-              <p className="text-sm text-text-secondary mt-1 max-w-sm mx-auto">
-                {statusFilter !== 'all'
-                  ? `There are no openings marked as ${statusFilter}.`
-                  : 'Get started by creating your first job opening.'}
+              <h3 className="font-editorial text-2xl font-bold text-plum-950">No positions found</h3>
+              <p className="text-xs text-charcoal-600 mt-1 max-w-sm mx-auto">
+                No vacancies currently match &quot;{statusFilter}&quot;. Establish a new job requisition to start matching talent.
               </p>
               <div className="mt-5">
                 <Link
                   href="/jobs/create"
-                  className="px-4 py-2 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition inline-block"
+                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-plum to-burgundy text-white text-xs font-mono uppercase font-semibold rounded-xl shadow-glow-magenta"
                 >
                   Create Position
                 </Link>
@@ -146,85 +142,103 @@ export default function JobsPage() {
             </div>
           )}
 
-          {/* Job Cards */}
+          {/* Jobs Grid */}
           {!loading && !error && jobs.length > 0 && (
-            <div className="grid grid-cols-1 gap-4">
-              {jobs.map((job) => (
-                <div
-                  key={job._id}
-                  className="bg-surface rounded-2xl border border-border-neutral p-6 shadow-subtle hover:border-brand/40 transition flex flex-col md:flex-row md:items-center justify-between gap-6"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href={`/jobs/${job._id}`}
-                        className="text-lg font-bold text-text-primary hover:text-brand transition truncate"
-                      >
-                        {job.title}
-                      </Link>
-                      <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          job.status === 'active'
-                            ? 'bg-soft-mint text-emerald-900 border border-emerald-200'
-                            : 'bg-canvas text-text-secondary border border-border-neutral'
-                        }`}
-                      >
-                        {job.status}
-                      </span>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {jobs.map((job) => {
+                const isActive = job.status === 'active';
+                return (
+                  <div
+                    key={job._id}
+                    className="bg-white/95 backdrop-blur-md rounded-3xl border border-border-luxury hover:border-plum-400 p-6 shadow-luxury-subtle hover:shadow-luxury-card transition-all flex flex-col justify-between group relative overflow-hidden"
+                  >
+                    {/* Top status indicator bar */}
+                    <div
+                      className={`absolute top-0 inset-x-0 h-1.5 ${
+                        isActive
+                          ? 'bg-gradient-to-r from-plum via-burgundy to-magenta-rose'
+                          : 'bg-charcoal-600'
+                      }`}
+                    />
 
-                    <p className="text-xs text-text-secondary mt-1.5 line-clamp-2 max-w-3xl leading-relaxed">
-                      {job.description}
-                    </p>
-
-                    {/* Skill Tags */}
-                    <div className="mt-3.5 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[11px] font-semibold text-text-secondary mr-1">Required:</span>
-                      {job.requiredSkills.map((sk, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2.5 py-0.5 bg-canvas rounded-md border border-border-neutral text-[11px] font-medium text-text-primary"
+                    <div>
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <Link
+                          href={`/jobs/${job._id}`}
+                          className="font-bold text-base text-plum-950 group-hover:text-magenta-muted transition-colors leading-snug"
                         >
-                          {sk}
+                          {job.title}
+                        </Link>
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase ${
+                            isActive
+                              ? 'bg-plum-100 text-plum-900 border border-plum-200'
+                              : 'bg-neutral-tinted text-charcoal-600 border border-border-luxury'
+                          }`}
+                        >
+                          {job.status}
                         </span>
-                      ))}
+                      </div>
+
+                      <p className="text-xs text-charcoal-600 line-clamp-2 leading-relaxed mb-4">
+                        {job.description}
+                      </p>
+
+                      {/* Required Skills Chips */}
+                      <div className="space-y-1.5 mb-4">
+                        <span className="font-mono text-[10px] uppercase font-semibold text-charcoal-600 tracking-wider block">
+                          Target Competencies:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {job.requiredSkills.slice(0, 4).map((skill, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-0.5 rounded-md text-[11px] font-mono bg-neutral-tinted text-plum-950 border border-border-luxury"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                          {job.requiredSkills.length > 4 && (
+                            <span className="px-1.5 py-0.5 text-[10px] font-mono text-magenta-muted">
+                              +{job.requiredSkills.length - 4} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="mt-3 flex items-center gap-4 text-xs text-text-secondary">
-                      <span className="font-medium text-text-primary">
-                        Experience: {job.experienceMin} – {job.experienceMax} years
+                    <div className="pt-4 border-t border-border-luxury flex items-center justify-between text-xs font-mono">
+                      <span className="text-charcoal-600">
+                        {job.experienceMin}-{job.experienceMax} Yrs Exp
                       </span>
-                      <span>•</span>
-                      <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
+
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/jobs/${job._id}`}
+                          className="px-2.5 py-1 rounded-lg bg-neutral-tinted hover:bg-plum-100 text-plum-950 font-semibold transition"
+                        >
+                          Specs
+                        </Link>
+                        <Link
+                          href={`/jobs/${job._id}/edit`}
+                          className="px-2.5 py-1 rounded-lg bg-neutral-tinted hover:bg-magenta-soft text-burgundy-900 font-semibold transition"
+                        >
+                          Edit
+                        </Link>
+                        {isActive && (
+                          <button
+                            onClick={() => handleDeactivate(job._id, job.title)}
+                            disabled={deactivatingId === job._id}
+                            className="px-2.5 py-1 rounded-lg bg-burgundy-soft text-burgundy hover:bg-burgundy-700 hover:text-white transition disabled:opacity-50"
+                          >
+                            {deactivatingId === job._id ? '…' : 'Archive'}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 pt-4 md:pt-0 border-t md:border-t-0 border-border-neutral self-end md:self-center">
-                    <Link
-                      href={`/jobs/${job._id}`}
-                      className="px-3 py-1.5 bg-canvas hover:bg-border-neutral/60 border border-border-neutral text-text-primary text-xs font-semibold rounded-xl transition"
-                    >
-                      Details
-                    </Link>
-                    <Link
-                      href={`/jobs/${job._id}/edit`}
-                      className="px-3 py-1.5 bg-soft-violet hover:bg-brand/10 border border-brand/20 text-brand text-xs font-semibold rounded-xl transition"
-                    >
-                      Edit
-                    </Link>
-                    {job.status === 'active' && (
-                      <button
-                        onClick={() => handleDeactivate(job._id, job.title)}
-                        disabled={deactivatingId === job._id}
-                        className="px-3 py-1.5 bg-soft-coral hover:bg-red-100 border border-coral/30 text-red-800 text-xs font-semibold rounded-xl transition disabled:opacity-50"
-                      >
-                        {deactivatingId === job._id ? 'Archiving...' : 'Deactivate'}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
