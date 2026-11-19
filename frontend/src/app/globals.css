@@ -97,6 +97,26 @@ body {
   }
 }
 
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmerGlow {
+  0%, 100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 8px rgba(213, 139, 155, 0.3));
+  }
+  50% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 16px rgba(167, 139, 250, 0.6));
+  }
+}
+
 .animate-synapse-glow {
   animation: ambientSynapse 12s ease-in-out infinite;
 }
@@ -108,6 +128,23 @@ body {
 .animate-beam-synapse {
   stroke-dasharray: 6 6;
   animation: beamSynapseFlow 2.4s linear infinite;
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 14s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-shimmer-glow {
+  animation: shimmerGlow 4s ease-in-out infinite;
+}
+
+/* Micro-interaction card hover lifts */
+.luxury-hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+.luxury-hover-lift:hover {
+  transform: translateY(-3px);
 }
 
 /* Typography Utilities */
