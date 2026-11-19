@@ -13,6 +13,7 @@ import {
   ApplicationStatus,
   ScreeningResult,
   InterviewQuestion,
+  DashboardStats,
 } from '../types';
 import { getAuthToken } from '../lib/utils';
 
@@ -64,6 +65,13 @@ export class ApiService {
   static async verifyProtected(roleTestEndpoint?: string): Promise<ApiResponse<any>> {
     const path = roleTestEndpoint ? `/protected/${roleTestEndpoint}` : '/protected/authenticated';
     return this.request<ApiResponse<any>>(path, {
+      method: 'GET',
+    });
+  }
+
+  // --- Dashboard Stats API (Phase 5) ---
+  static async getDashboardStats(): Promise<ApiResponse<DashboardStats>> {
+    return this.request<ApiResponse<DashboardStats>>('/dashboard/stats', {
       method: 'GET',
     });
   }
@@ -200,7 +208,7 @@ export class ApiService {
     });
   }
 
-  // --- AI Resume Screening & Interview Question APIs (Phase 4) ---
+  // --- AI Resume Screening & Interview Question APIs ---
   static async screenApplication(applicationId: string): Promise<ApiResponse<ScreeningResult>> {
     return this.request<ApiResponse<ScreeningResult>>(`/screening/${encodeURIComponent(applicationId)}/screen`, {
       method: 'POST',

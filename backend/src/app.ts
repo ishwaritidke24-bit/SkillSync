@@ -5,6 +5,7 @@ import { jobRouter } from './modules/job/job.routes.js';
 import { candidateRouter } from './modules/candidate/candidate.routes.js';
 import { applicationRouter } from './modules/application/application.routes.js';
 import { screeningRouter } from './modules/screening/screening.routes.js';
+import { dashboardRouter } from './modules/dashboard/dashboard.routes.js';
 import { authenticate } from './middleware/auth.middleware.js';
 import { authorize } from './middleware/role.middleware.js';
 
@@ -30,16 +31,19 @@ export const createApp = (): Express => {
   // Job management routes
   app.use('/api/jobs', jobRouter);
 
-  // Candidate management routes (Phase 3)
+  // Candidate management routes
   app.use('/api/candidates', candidateRouter);
 
-  // Application management routes (Phase 3)
+  // Application management routes
   app.use('/api/applications', applicationRouter);
 
-  // AI Screening and Interview Questions routes (Phase 4)
+  // AI Screening & Interview Questions routes
   app.use('/api/screening', screeningRouter);
 
-  // Role verification verification test routes for Phase 1
+  // Dashboard & Analytics routes (Phase 5)
+  app.use('/api/dashboard', dashboardRouter);
+
+  // Role verification verification test routes
   app.get('/api/protected/admin-only', authenticate, authorize('Admin'), (_req: Request, res: Response) => {
     res.status(200).json({ success: true, message: 'Welcome Admin: access granted to admin resources.' });
   });

@@ -135,6 +135,21 @@ export interface InterviewQuestion {
   updatedAt: string;
 }
 
+// --- Dashboard Statistics Types ---
+
+export interface DashboardStats {
+  totalCandidates: number;
+  activeJobs: number;
+  totalApplications: number;
+  statusCounts: {
+    applied: number;
+    screening: number;
+    interview: number;
+    offered: number;
+    rejected: number;
+  };
+}
+
 export interface PaginationMeta {
   total: number;
   page: number;

@@ -2,100 +2,107 @@
 
 SkillSync strictly utilizes seven MongoDB collections as defined in the system architecture.
 
+---
+
 ## Collections Overview
 
-| # | Collection | Description | Status |
+| # | Collection | Model Name | Description |
 |---|---|---|---|
-| 1 | `users` | Admin and Recruiter credentials and role assignments | **Implemented (Phase 1)** |
-| 2 | `jobs` | Job postings, required skills, and experience criteria | **Implemented (Phase 2)** |
-| 3 | `candidates` | Candidate profiles, contact details, and skill sets | **Implemented (Phase 3)** |
-| 4 | `applications` | Application links connecting candidates to specific jobs | **Implemented (Phase 3)** |
-| 5 | `resumes` | Private resume metadata and extracted text content | **Implemented (Phase 3)** |
-| 6 | `screeningresults` | AI evaluation, matching criteria, and gap explanations | **Implemented (Phase 4)** |
-| 7 | `interviewquestions` | AI-generated interview questions per application | **Implemented (Phase 4)** |
+| 1 | `users` | `User` | Admin and Recruiter credentials and role assignments |
+| 2 | `jobs` | `Job` | Job postings, required skills, and experience criteria |
+| 3 | `candidates` | `Candidate` | Candidate profiles, contact details, and skill sets |
+| 4 | `resumes` | `Resume` | Private resume metadata and extracted plain text |
+| 5 | `applications` | `Application` | Links candidates to specific jobs with independent status |
+| 6 | `screeningresults`| `ScreeningResult` | AI resume screening evaluation, matching skills & gaps |
+| 7 | `interviewquestions`| `InterviewQuestion`| Tailored technical and behavioral interview questions |
 
 ---
 
-## Detailed Collection Definitions
+## Collection Schemas & Relationships
 
-### 1. `User` (Implemented in Phase 1)
+### 1. `User` Collection
+Stores administrative and recruiter authentication records.
 ```typescript
 {
   _id: ObjectId,
-  email: string,        // unique, lowercase, trimmed
-  password: string,     // hashed with bcrypt
-  name: string,         // user's full name
-  role: 'Admin' | 'Recruiter', // role-based authorization
+  email: string,                 // required, unique, lowercase, trimmed
+  password: string,              // required, bcrypt hashed (minlength: 6)
+  name: string,                  // required, trimmed
+  role: 'Admin' | 'Recruiter',   // required, default: 'Recruiter'
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-### 2. `Job` (Implemented in Phase 2)
+### 2. `Job` Collection
+Stores job openings and hiring criteria.
 ```typescript
 {
   _id: ObjectId,
   title: string,                 // required, trimmed
   description: string,           // required, trimmed
-  requiredSkills: string[],      // required, non-empty array of skill strings
+  requiredSkills: string[],      // required, non-empty array of strings
   experienceMin: number,         // required, min: 0
   experienceMax: number,         // required, min: experienceMin
-  status: 'active' | 'deactivated', // default: 'active'
+  status: 'active' | 'deactivated', // required, default: 'active'
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-### 3. `Candidate` (Implemented in Phase 3)
+### 3. `Candidate` Collection
+Stores candidate personal information, skill tags, and link to their resume.
 ```typescript
 {
   _id: ObjectId,
   name: string,                  // required, trimmed
   email: string,                 // required, unique, lowercase, trimmed
   phone?: string,                // optional, trimmed
-  skills: string[],              // required, non-empty array
-  experienceYears: number,       // required, min: 0
-  resume?: ObjectId,             // ref: Resume, default: null
+  skills: string[],              // required, non-empty array of strings
+  experienceYears: number,       // required, min: 0, default: 0
+  resume?: ObjectId,             // ref: 'Resume', default: null
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-### 4. `Resume` (Implemented in Phase 3)
+### 4. `Resume` Collection
+Stores private server file metadata and parsed text extracted via `pdf-parse`.
 ```typescript
 {
   _id: ObjectId,
-  candidate: ObjectId,           // ref: Candidate, required, unique
-  fileName: string,              // original uploaded file name
-  filePath: string,              // private server storage path
-  mimeType: string,              // 'application/pdf'
-  fileSize: number,              // bytes
-  extractedText: string,         // plain text extracted by pdf-parse
+  candidate: ObjectId,           // ref: 'Candidate', required, unique
+  fileName: string,              // required, original file name
+  filePath: string,              // required, private server file path
+  mimeType: string,              // required, 'application/pdf'
+  fileSize: number,              // required, file size in bytes
+  extractedText: string,         // plain text parsed from PDF
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-### 5. `Application` (Implemented in Phase 3)
+### 5. `Application` Collection
+Represents a candidate's application for a specific job position.
 ```typescript
 {
   _id: ObjectId,
-  candidate: ObjectId,           // ref: Candidate, required
-  job: ObjectId,                 // ref: Job, required
-  status: 'applied' | 'screening' | 'interview' | 'offered' | 'rejected', // default: 'applied'
+  candidate: ObjectId,           // ref: 'Candidate', required
+  job: ObjectId,                 // ref: 'Job', required
+  status: 'applied' | 'screening' | 'interview' | 'offered' | 'rejected', // required, default: 'applied'
   createdAt: Date,
   updatedAt: Date
 }
-// Unique compound index: { candidate: 1, job: 1 }
+// Unique compound index: { candidate: 1, job: 1 } prevents duplicate submissions.
 ```
 
-### 6. `ScreeningResult` (Implemented in Phase 4)
-Stores Gemini AI screening output associated with an application.
+### 6. `ScreeningResult` Collection
+Stores Google Gemini AI screening outputs comparing a candidate's resume with job criteria.
 ```typescript
 {
   _id: ObjectId,
-  application: ObjectId,         // ref: Application, required, unique
-  matchingSkills: string[],      // required skills found in resume
+  application: ObjectId,         // ref: 'Application', required, unique
+  matchingSkills: string[],      // verified skills matching job requirements
   missingSkills: string[],       // required skills missing or lacking evidence
   experienceAnalysis: string,    // detailed evaluation of stated experience vs required range
   explanation: string,           // recruiter-friendly breakdown of evidence and gaps
@@ -105,17 +112,19 @@ Stores Gemini AI screening output associated with an application.
 }
 ```
 
-### 7. `InterviewQuestion` (Implemented in Phase 4)
-Stores tailored questions generated by Gemini for an application.
+### 7. `InterviewQuestion` Collection
+Stores tailored interview questions generated by Gemini for an application.
 ```typescript
 {
   _id: ObjectId,
-  application: ObjectId,         // ref: Application, required, unique
-  questions: Array<{
-    question: string,            // technical or experience interview question
-    category: string,            // e.g. 'Technical Knowledge', 'System Design'
-    context?: string             // why this question evaluates the role requirements
-  }>,
+  application: ObjectId,         // ref: 'Application', required, unique
+  questions: [
+    {
+      question: string,          // interview question text
+      category: string,          // e.g., 'Technical Knowledge', 'Problem Solving'
+      context?: string           // why this question evaluates the role requirements
+    }
+  ],
   createdAt: Date,
   updatedAt: Date
 }
