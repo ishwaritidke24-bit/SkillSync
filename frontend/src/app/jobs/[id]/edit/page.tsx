@@ -56,54 +56,56 @@ export default function EditJobPage() {
     <ProtectedRoute>
       <WorkspaceLayout>
         <div className="max-w-3xl mx-auto space-y-6">
-          <div className="flex items-center gap-2 text-xs text-text-secondary">
-            <Link href="/jobs" className="hover:text-text-primary transition">
+          <div className="flex items-center gap-2 text-xs font-mono text-charcoal-600">
+            <Link href="/jobs" className="hover:text-plum-950 transition">
               Positions
             </Link>
-            <span>/</span>
-            <Link href={`/jobs/${id}`} className="hover:text-text-primary transition truncate max-w-[200px]">
+            <span className="text-plum-300">/</span>
+            <Link href={`/jobs/${id}`} className="hover:text-plum-950 transition truncate max-w-[200px]">
               {job?.title || 'Details'}
             </Link>
-            <span>/</span>
-            <span className="text-text-primary font-semibold">Edit</span>
+            <span className="text-plum-300">/</span>
+            <span className="text-plum-950 font-bold">Edit</span>
           </div>
 
-          <div className="bg-surface rounded-2xl border border-border-neutral p-6 sm:p-8 shadow-subtle">
-            <div className="border-b border-border-neutral pb-5 mb-6">
-              <span className="text-xs font-semibold uppercase tracking-wider text-brand">
+          <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-border-luxury p-7 sm:p-9 shadow-luxury-card relative overflow-hidden">
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-plum via-burgundy to-magenta-rose" />
+
+            <div className="border-b border-border-luxury pb-5 mb-6">
+              <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-magenta-muted">
                 Update Vacancy
               </span>
-              <h1 className="text-2xl font-extrabold text-text-primary tracking-tight mt-1">
+              <h1 className="font-editorial text-3xl sm:text-4xl font-bold text-plum-950 tracking-tight mt-1">
                 Edit Position.
               </h1>
-              <p className="text-xs text-text-secondary mt-1">
+              <p className="text-xs text-charcoal-600 mt-1">
                 Modify parameters, required competencies, or activation status.
               </p>
             </div>
 
             {loading && (
               <div className="py-20 flex flex-col items-center justify-center">
-                <div className="w-8 h-8 border-3 border-brand border-t-transparent rounded-full animate-spin" />
-                <p className="text-xs font-medium text-text-secondary mt-3">Fetching job data...</p>
+                <div className="w-8 h-8 border-2 border-plum-600 border-t-transparent rounded-full animate-spin" />
+                <p className="text-xs font-mono text-charcoal-600 mt-3">Fetching job data...</p>
               </div>
             )}
 
             {error && (
-              <div className="p-4 bg-soft-coral border border-coral/30 rounded-xl text-xs text-red-800">
+              <div className="p-4 bg-burgundy-soft border border-burgundy-700/30 rounded-2xl text-xs text-burgundy-950 font-mono">
                 {error}
               </div>
             )}
 
             {successMessage && (
-              <div className="mb-6 p-4 bg-soft-mint border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center gap-2.5">
-                <svg className="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mb-6 p-4 bg-plum-100 border border-plum-200 rounded-2xl text-xs font-mono text-plum-900 flex items-center gap-2.5">
+                <svg className="w-5 h-5 text-plum-800 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="font-medium">{successMessage}</span>
               </div>
             )}
 
-            {!loading && !error && job && (
+            {job && (
               <JobForm
                 initialData={{
                   title: job.title,
