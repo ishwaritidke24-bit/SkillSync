@@ -1,16 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ProtectedRoute } from '../../../components/ProtectedRoute';
-import { Navbar } from '../../../components/Navbar';
+import { WorkspaceLayout } from '../../../components/WorkspaceLayout';
 import { ApiService } from '../../../services/api';
 import { Job } from '../../../types';
 
 export default function JobDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = Array.isArray(params?.id) ? params.id[0] : (params?.id as string);
 
   const [job, setJob] = useState<Job | null>(null);
@@ -57,104 +56,98 @@ export default function JobDetailPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-slate-50">
-        <Navbar />
-
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-4 flex items-center gap-2 text-xs text-slate-500">
-            <Link href="/jobs" className="hover:underline">
-              Jobs
+      <WorkspaceLayout>
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="flex items-center gap-2 text-xs text-text-secondary">
+            <Link href="/jobs" className="hover:text-text-primary transition">
+              Positions
             </Link>
             <span>/</span>
-            <span className="text-slate-800 font-medium">Job Details</span>
+            <span className="text-text-primary font-semibold">Position Specifications</span>
           </div>
 
           {loading && (
-            <div className="py-20 flex flex-col items-center justify-center">
-              <div className="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-sm text-slate-500 mt-4">Loading job details from MongoDB...</p>
+            <div className="py-24 flex flex-col items-center justify-center">
+              <div className="w-10 h-10 border-3 border-brand border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm font-medium text-text-secondary mt-4">Loading position details...</p>
             </div>
           )}
 
           {error && (
-            <div className="bg-white rounded-xl border border-red-200 p-8 text-center shadow-sm">
-              <h2 className="text-lg font-bold text-red-600 mb-2">Error Loading Job</h2>
-              <p className="text-sm text-slate-600 mb-4">{error}</p>
-              <Link
-                href="/jobs"
-                className="inline-flex px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-medium hover:bg-slate-700 transition"
-              >
-                Back to Jobs
+            <div className="bg-surface rounded-2xl border border-coral/30 p-8 text-center shadow-subtle">
+              <h2 className="text-base font-bold text-red-700 mb-2">Position Error</h2>
+              <p className="text-xs text-text-secondary mb-4">{error}</p>
+              <Link href="/jobs" className="px-4 py-2 bg-brand text-white rounded-xl text-xs font-semibold">
+                Back to Positions
               </Link>
             </div>
           )}
 
           {!loading && !error && job && (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-              {/* Header */}
-              <div className="p-6 sm:p-8 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-white">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="bg-surface rounded-2xl border border-border-neutral shadow-subtle overflow-hidden">
+              {/* Header Banner */}
+              <div className="p-6 sm:p-8 border-b border-border-neutral bg-surface-subtle">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{job.title}</h1>
+                      <h1 className="text-2xl font-extrabold text-text-primary tracking-tight">
+                        {job.title}
+                      </h1>
                       <span
-                        className={`px-2.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wider ${
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                           job.status === 'active'
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                            : 'bg-slate-100 text-slate-600 border border-slate-200'
+                            ? 'bg-soft-mint text-emerald-900 border border-emerald-200'
+                            : 'bg-canvas text-text-secondary border border-border-neutral'
                         }`}
                       >
                         {job.status}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 mt-2">
-                      Job ID: <span className="font-mono text-slate-700">{job._id}</span> • Posted on{' '}
-                      {new Date(job.createdAt).toLocaleDateString()}
+                    <p className="text-xs text-text-secondary mt-1">
+                      Position ID: <span className="font-mono text-text-primary">{job._id}</span> • Posted {new Date(job.createdAt).toLocaleDateString()}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/jobs/${job._id}/edit`}
-                      className="px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-200 transition"
+                      className="px-3.5 py-2 text-xs font-semibold text-brand bg-soft-violet hover:bg-brand/10 rounded-xl border border-brand/20 transition"
                     >
-                      Edit Job
+                      Edit Position
                     </Link>
                     {job.status === 'active' && (
                       <button
                         onClick={handleDeactivate}
                         disabled={isDeactivating}
-                        className="px-4 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 transition disabled:opacity-50"
+                        className="px-3.5 py-2 text-xs font-semibold text-red-800 bg-soft-coral hover:bg-red-100 rounded-xl border border-coral/30 transition disabled:opacity-50"
                       >
-                        {isDeactivating ? 'Deactivating...' : 'Deactivate'}
+                        {isDeactivating ? 'Archiving...' : 'Deactivate'}
                       </button>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Content Body */}
-              <div className="p-6 sm:p-8 space-y-8">
-                {/* Job Description */}
+              {/* Body */}
+              <div className="p-6 sm:p-8 space-y-6">
                 <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-2">
-                    Job Description
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-2">
+                    Role Description
                   </h3>
-                  <div className="text-slate-800 text-sm leading-relaxed whitespace-pre-wrap bg-slate-50 p-4 rounded-lg border border-slate-200">
+                  <div className="p-5 bg-canvas/40 rounded-xl border border-border-neutral text-sm text-text-primary leading-relaxed whitespace-pre-wrap">
                     {job.description}
                   </div>
                 </div>
 
-                {/* Required Skills */}
                 <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-2">
-                    Required Skills
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-2">
+                    Required Competencies ({job.requiredSkills.length})
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {job.requiredSkills.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold rounded-lg"
+                        className="px-3 py-1 bg-soft-violet text-brand text-xs font-semibold rounded-lg border border-brand/15"
                       >
                         {skill}
                       </span>
@@ -162,23 +155,22 @@ export default function JobDetailPage() {
                   </div>
                 </div>
 
-                {/* Experience Range */}
                 <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-2">
-                    Experience Range
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-2">
+                    Experience Requirement Baseline
                   </h3>
-                  <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-800">
-                    <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-canvas/60 border border-border-neutral rounded-xl text-xs font-semibold text-text-primary">
+                    <svg className="w-4 h-4 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>{job.experienceMin} to {job.experienceMax} years required</span>
+                    <span>{job.experienceMin} to {job.experienceMax} years of verified experience</span>
                   </div>
                 </div>
               </div>
             </div>
           )}
-        </main>
-      </div>
+        </div>
+      </WorkspaceLayout>
     </ProtectedRoute>
   );
 }

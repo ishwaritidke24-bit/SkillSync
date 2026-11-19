@@ -3,13 +3,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
-import { Navbar } from '../../components/Navbar';
-import { useAuth } from '../../hooks/useAuth';
+import { WorkspaceLayout } from '../../components/WorkspaceLayout';
 import { ApiService } from '../../services/api';
 import { DashboardStats, Job } from '../../types';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentJobs, setRecentJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +25,7 @@ export default function DashboardPage() {
         setStats(statsRes.data);
       }
       if (jobsRes.data) {
-        setRecentJobs(jobsRes.data.slice(0, 3));
+        setRecentJobs(jobsRes.data.slice(0, 4));
       }
     } catch (err: any) {
       setError(err.message || 'Failed to load recruitment dashboard');
@@ -48,252 +46,325 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-slate-50">
-        <Navbar />
-
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Welcome Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <WorkspaceLayout
+        headerAction={
+          <Link
+            href="/jobs/create"
+            className="px-3.5 py-1.5 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition flex items-center gap-1.5"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Post Opening</span>
+          </Link>
+        }
+      >
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border-neutral pb-6">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-                Recruitment Dashboard
+              <span className="text-xs font-semibold uppercase tracking-wider text-brand">
+                Workspace Overview
+              </span>
+              <h1 className="text-3xl font-extrabold text-text-primary tracking-tight mt-1">
+                Your recruitment overview.
               </h1>
-              <p className="text-sm text-slate-500 mt-0.5">
-                Overview of jobs, candidate talent pool, applications, and pipeline stages.
+              <p className="text-sm text-text-secondary mt-1 max-w-xl">
+                Active hiring pipeline metrics, live vacancies, and candidate evaluations powered by MongoDB Atlas.
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <Link
-                href="/jobs/create"
-                className="inline-flex items-center justify-center px-3.5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold shadow-sm transition gap-1.5"
+              <button
+                onClick={fetchDashboardData}
+                disabled={loading}
+                className="px-3 py-1.5 border border-border-neutral rounded-xl text-xs font-semibold text-text-secondary hover:text-text-primary bg-surface hover:bg-canvas transition flex items-center gap-1.5"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                <svg className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                Post Job
-              </Link>
-              <Link
-                href="/candidates/add"
-                className="inline-flex items-center justify-center px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold shadow-sm transition gap-1.5"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                </svg>
-                Add Candidate
-              </Link>
+                <span>Refresh</span>
+              </button>
             </div>
           </div>
 
-          {/* Error State */}
+          {/* Error Banner */}
           {error && (
-            <div className="p-4 mb-6 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex items-center justify-between shadow-sm">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="p-4 bg-soft-coral border border-coral/30 rounded-2xl text-sm text-red-800 flex items-center justify-between shadow-subtle">
+              <div className="flex items-center gap-2.5">
+                <svg className="w-5 h-5 text-red-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <span>{error}</span>
               </div>
-              <button onClick={fetchDashboardData} className="text-xs font-semibold underline text-red-800">
+              <button onClick={fetchDashboardData} className="text-xs font-semibold underline text-red-900">
                 Retry
               </button>
             </div>
           )}
 
-          {/* Loading State */}
+          {/* Loading Skeleton */}
           {loading && (
             <div className="py-24 flex flex-col items-center justify-center">
-              <div className="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-sm text-slate-500 mt-4">Retrieving recruitment metrics from MongoDB Atlas...</p>
+              <div className="w-10 h-10 border-3 border-brand border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm font-medium text-text-secondary mt-4">
+                Loading recruitment intelligence...
+              </p>
             </div>
           )}
 
           {/* Empty State */}
           {!loading && !error && isEmpty && (
-            <div className="text-center py-20 bg-white rounded-xl border border-slate-200 shadow-sm p-8 mb-6">
-              <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            <div className="text-center py-20 bg-surface rounded-2xl border border-border-neutral shadow-subtle p-8">
+              <div className="w-14 h-14 rounded-2xl bg-canvas text-brand mx-auto flex items-center justify-center mb-4 border border-border-neutral">
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
-              <h3 className="text-base font-semibold text-slate-900">No recruitment activity yet</h3>
-              <p className="text-sm text-slate-500 mt-1 max-w-sm mx-auto">
-                Get started by creating your first job posting or adding a candidate profile.
+              <h3 className="text-lg font-bold text-text-primary">No recruitment activity detected</h3>
+              <p className="text-sm text-text-secondary mt-1.5 max-w-sm mx-auto">
+                Begin by posting a position or registering candidate profiles into the database.
               </p>
-              <div className="mt-5 flex items-center justify-center gap-3">
+              <div className="mt-6 flex items-center justify-center gap-3">
                 <Link
                   href="/jobs/create"
-                  className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-lg shadow-sm"
+                  className="px-4 py-2 bg-brand hover:bg-brand-hover text-white text-xs font-semibold rounded-xl shadow-subtle transition"
                 >
-                  Post First Job
+                  Post First Vacancy
                 </Link>
                 <Link
                   href="/candidates/add"
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-lg shadow-sm"
+                  className="px-4 py-2 bg-surface hover:bg-canvas border border-border-neutral text-text-primary text-xs font-semibold rounded-xl transition"
                 >
-                  Add Candidate
+                  Register Candidate
                 </Link>
               </div>
             </div>
           )}
 
-          {/* Dashboard Content */}
+          {/* Active Dashboard */}
           {!loading && !error && stats && !isEmpty && (
-            <div className="space-y-6">
-              {/* Primary Stat Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            <div className="space-y-8">
+              {/* Metric Hero Row */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Total Candidates */}
-                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div className="bg-surface rounded-2xl border border-border-neutral p-6 shadow-subtle relative overflow-hidden group hover:border-brand/40 transition">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                      Total Candidates
+                    <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                      Talent Pool
                     </span>
-                    <span className="p-2 rounded-lg bg-teal-50 text-teal-700">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    <span className="p-2 rounded-xl bg-soft-mint text-emerald-800">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </span>
                   </div>
-                  <p className="text-3xl font-extrabold text-slate-900 mt-3">{stats.totalCandidates}</p>
-                  <Link href="/candidates" className="text-xs font-medium text-teal-600 hover:underline mt-2 inline-block">
-                    View candidate talent pool →
-                  </Link>
+                  <p className="text-4xl font-extrabold text-text-primary tracking-tight mt-4">
+                    {stats.totalCandidates}
+                  </p>
+                  <div className="mt-3 pt-3 border-t border-border-neutral flex items-center justify-between">
+                    <span className="text-xs text-text-secondary">Profiles in database</span>
+                    <Link href="/candidates" className="text-xs font-semibold text-brand hover:underline">
+                      Explore talent →
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Active Jobs */}
-                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div className="bg-surface rounded-2xl border border-border-neutral p-6 shadow-subtle relative overflow-hidden group hover:border-brand/40 transition">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                      Active Jobs
+                    <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                      Active Openings
                     </span>
-                    <span className="p-2 rounded-lg bg-indigo-50 text-indigo-700">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <span className="p-2 rounded-xl bg-soft-violet text-brand">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </span>
                   </div>
-                  <p className="text-3xl font-extrabold text-slate-900 mt-3">{stats.activeJobs}</p>
-                  <Link href="/jobs" className="text-xs font-medium text-indigo-600 hover:underline mt-2 inline-block">
-                    Manage job postings →
-                  </Link>
+                  <p className="text-4xl font-extrabold text-text-primary tracking-tight mt-4">
+                    {stats.activeJobs}
+                  </p>
+                  <div className="mt-3 pt-3 border-t border-border-neutral flex items-center justify-between">
+                    <span className="text-xs text-text-secondary">Live vacancies</span>
+                    <Link href="/jobs" className="text-xs font-semibold text-brand hover:underline">
+                      Manage jobs →
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Total Applications */}
-                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div className="bg-surface rounded-2xl border border-border-neutral p-6 shadow-subtle relative overflow-hidden group hover:border-brand/40 transition">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                       Total Applications
                     </span>
-                    <span className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <span className="p-2 rounded-xl bg-canvas text-text-primary">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </span>
                   </div>
-                  <p className="text-3xl font-extrabold text-slate-900 mt-3">{stats.totalApplications}</p>
-                  <Link href="/applications" className="text-xs font-medium text-emerald-600 hover:underline mt-2 inline-block">
-                    Review applications →
-                  </Link>
+                  <p className="text-4xl font-extrabold text-text-primary tracking-tight mt-4">
+                    {stats.totalApplications}
+                  </p>
+                  <div className="mt-3 pt-3 border-t border-border-neutral flex items-center justify-between">
+                    <span className="text-xs text-text-secondary">Linked submissions</span>
+                    <Link href="/applications" className="text-xs font-semibold text-brand hover:underline">
+                      Review pipeline →
+                    </Link>
+                  </div>
                 </div>
               </div>
 
-              {/* Application Status Pipeline Breakdown */}
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+              {/* Recruitment Pipeline Breakdown */}
+              <div className="bg-surface rounded-2xl border border-border-neutral p-6 sm:p-8 shadow-subtle">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 border-b border-border-neutral pb-4">
                   <div>
-                    <h2 className="text-base font-bold text-slate-900">Application Status Counts</h2>
-                    <p className="text-xs text-slate-500">Breakdown of applications across recruitment stages</p>
+                    <h2 className="text-lg font-bold text-text-primary">
+                      Recruitment Pipeline Stages
+                    </h2>
+                    <p className="text-xs text-text-secondary mt-0.5">
+                      Distribution of applications across five independent qualification stages
+                    </p>
                   </div>
-                  <Link href="/applications" className="text-xs font-semibold text-teal-600 hover:underline">
-                    View All →
+                  <Link
+                    href="/applications"
+                    className="text-xs font-semibold text-brand hover:underline self-start sm:self-auto"
+                  >
+                    View All Applications →
                   </Link>
                 </div>
 
+                {/* Segmented Pipeline Bar */}
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                   {/* Applied */}
-                  <div className="p-4 bg-blue-50/60 border border-blue-200 rounded-xl">
-                    <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider block">
-                      Applied
-                    </span>
-                    <p className="text-2xl font-extrabold text-blue-900 mt-1">{stats.statusCounts.applied}</p>
+                  <div className="p-4 bg-canvas/60 rounded-xl border border-border-neutral">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-blue-500" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                        Applied
+                      </span>
+                    </div>
+                    <p className="text-2xl font-extrabold text-text-primary">
+                      {stats.statusCounts.applied}
+                    </p>
+                    <span className="text-[10px] text-text-secondary">Initial Inflow</span>
                   </div>
 
                   {/* Screening */}
-                  <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl">
-                    <span className="text-xs font-semibold text-amber-700 uppercase tracking-wider block">
-                      Screening
-                    </span>
-                    <p className="text-2xl font-extrabold text-amber-900 mt-1">{stats.statusCounts.screening}</p>
+                  <div className="p-4 bg-soft-violet/50 rounded-xl border border-brand/20">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-brand">
+                        Screening
+                      </span>
+                    </div>
+                    <p className="text-2xl font-extrabold text-brand">
+                      {stats.statusCounts.screening}
+                    </p>
+                    <span className="text-[10px] text-brand/80">AI Evidence Lens</span>
                   </div>
 
                   {/* Interview */}
-                  <div className="p-4 bg-indigo-50/60 border border-indigo-200 rounded-xl">
-                    <span className="text-xs font-semibold text-indigo-700 uppercase tracking-wider block">
-                      Interview
-                    </span>
-                    <p className="text-2xl font-extrabold text-indigo-900 mt-1">{stats.statusCounts.interview}</p>
+                  <div className="p-4 bg-canvas/60 rounded-xl border border-border-neutral">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                        Interview
+                      </span>
+                    </div>
+                    <p className="text-2xl font-extrabold text-text-primary">
+                      {stats.statusCounts.interview}
+                    </p>
+                    <span className="text-[10px] text-text-secondary">Active Dialog</span>
                   </div>
 
                   {/* Offered */}
-                  <div className="p-4 bg-emerald-50/60 border border-emerald-200 rounded-xl">
-                    <span className="text-xs font-semibold text-emerald-700 uppercase tracking-wider block">
-                      Offered
-                    </span>
-                    <p className="text-2xl font-extrabold text-emerald-900 mt-1">{stats.statusCounts.offered}</p>
+                  <div className="p-4 bg-soft-mint/60 rounded-xl border border-emerald-200/60">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-900">
+                        Offered
+                      </span>
+                    </div>
+                    <p className="text-2xl font-extrabold text-emerald-950">
+                      {stats.statusCounts.offered}
+                    </p>
+                    <span className="text-[10px] text-emerald-800">Proposal Stage</span>
                   </div>
 
                   {/* Rejected */}
-                  <div className="p-4 bg-slate-100 border border-slate-200 rounded-xl">
-                    <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider block">
-                      Rejected
-                    </span>
-                    <p className="text-2xl font-extrabold text-slate-800 mt-1">{stats.statusCounts.rejected}</p>
+                  <div className="p-4 bg-canvas/60 rounded-xl border border-border-neutral">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="w-2 h-2 rounded-full bg-slate-400" />
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                        Closed
+                      </span>
+                    </div>
+                    <p className="text-2xl font-extrabold text-text-primary">
+                      {stats.statusCounts.rejected}
+                    </p>
+                    <span className="text-[10px] text-text-secondary">Not Proceeding</span>
                   </div>
                 </div>
               </div>
 
-              {/* Active Openings Quick Access */}
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+              {/* Active Openings Quick Access Preview */}
+              <div className="bg-surface rounded-2xl border border-border-neutral p-6 sm:p-8 shadow-subtle">
+                <div className="flex items-center justify-between mb-5 border-b border-border-neutral pb-4">
                   <div>
-                    <h2 className="text-base font-bold text-slate-900">Active Job Positions</h2>
-                    <p className="text-xs text-slate-500">Latest active vacancies stored in MongoDB</p>
+                    <h2 className="text-lg font-bold text-text-primary">
+                      Live Openings Preview
+                    </h2>
+                    <p className="text-xs text-text-secondary mt-0.5">
+                      Recruitment positions currently accepting applications
+                    </p>
                   </div>
-                  <Link href="/jobs" className="text-xs font-semibold text-teal-600 hover:underline">
-                    View all {stats.activeJobs} jobs →
+                  <Link href="/jobs" className="text-xs font-semibold text-brand hover:underline">
+                    View all {stats.activeJobs} positions →
                   </Link>
                 </div>
 
                 {recentJobs.length === 0 ? (
-                  <p className="text-xs text-slate-500 italic">No active positions found.</p>
+                  <p className="text-xs text-text-secondary italic">No active positions currently available.</p>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {recentJobs.map((j) => (
-                      <div key={j._id} className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                      <div
+                        key={j._id}
+                        className="p-5 bg-canvas/40 hover:bg-canvas rounded-xl border border-border-neutral transition flex flex-col justify-between"
+                      >
                         <div>
-                          <Link href={`/jobs/${j._id}`} className="font-bold text-sm text-slate-900 hover:text-teal-600">
-                            {j.title}
-                          </Link>
-                          <p className="text-xs text-slate-500 mt-1">
-                            Experience: {j.experienceMin}–{j.experienceMax} years
+                          <div className="flex items-start justify-between gap-2">
+                            <Link href={`/jobs/${j._id}`} className="font-bold text-base text-text-primary hover:text-brand transition">
+                              {j.title}
+                            </Link>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-soft-mint text-emerald-800 border border-emerald-200">
+                              Active
+                            </span>
+                          </div>
+                          <p className="text-xs text-text-secondary mt-1">
+                            Experience: {j.experienceMin} – {j.experienceMax} years
                           </p>
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {j.requiredSkills.slice(0, 3).map((sk, idx) => (
-                              <span key={idx} className="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-600 font-medium">
+                          <div className="flex flex-wrap gap-1.5 mt-3">
+                            {j.requiredSkills.slice(0, 4).map((sk, idx) => (
+                              <span key={idx} className="px-2 py-0.5 bg-surface border border-border-neutral rounded-md text-[11px] font-medium text-text-secondary">
                                 {sk}
                               </span>
                             ))}
-                            {j.requiredSkills.length > 3 && (
-                              <span className="text-[10px] text-slate-400 self-center">+{j.requiredSkills.length - 3}</span>
+                            {j.requiredSkills.length > 4 && (
+                              <span className="text-[11px] text-text-tertiary self-center">
+                                +{j.requiredSkills.length - 4} more
+                              </span>
                             )}
                           </div>
                         </div>
-                        <div className="mt-3 pt-2 border-t border-slate-200/60 flex items-center justify-between">
-                          <span className="text-[10px] text-slate-400">
-                            Posted {new Date(j.createdAt).toLocaleDateString()}
-                          </span>
-                          <Link href={`/jobs/${j._id}`} className="text-xs font-semibold text-teal-700 hover:underline">
-                            Details →
+
+                        <div className="mt-4 pt-3 border-t border-border-neutral/60 flex items-center justify-between text-xs text-text-secondary">
+                          <span>Posted {new Date(j.createdAt).toLocaleDateString()}</span>
+                          <Link href={`/jobs/${j._id}`} className="font-semibold text-brand hover:underline">
+                            Inspect Opening →
                           </Link>
                         </div>
                       </div>
@@ -303,8 +374,8 @@ export default function DashboardPage() {
               </div>
             </div>
           )}
-        </main>
-      </div>
+        </div>
+      </WorkspaceLayout>
     </ProtectedRoute>
   );
 }

@@ -77,17 +77,17 @@ export function CandidateForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {errorMessage && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+        <div className="p-4 bg-soft-coral border border-coral/30 rounded-xl text-xs text-red-800">
           {errorMessage}
         </div>
       )}
 
       {/* Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-semibold text-slate-700">
-          Full Name *
+        <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
+          Candidate Full Name *
         </label>
         <input
           id="name"
@@ -96,13 +96,13 @@ export function CandidateForm({
           onChange={(e) => setName(e.target.value)}
           required
           placeholder="e.g. Alex Morgan"
-          className="mt-1 w-full px-3.5 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+          className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
         />
       </div>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-semibold text-slate-700">
+        <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
           Email Address *
         </label>
         <input
@@ -111,14 +111,14 @@ export function CandidateForm({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          placeholder="e.g. alex.morgan@example.com"
-          className="mt-1 w-full px-3.5 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+          placeholder="alex.morgan@example.com"
+          className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
         />
       </div>
 
       {/* Phone */}
       <div>
-        <label htmlFor="phone" className="block text-sm font-semibold text-slate-700">
+        <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
           Phone Number (Optional)
         </label>
         <input
@@ -127,31 +127,33 @@ export function CandidateForm({
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="+1 (555) 012-3456"
-          className="mt-1 w-full px-3.5 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+          className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
         />
       </div>
 
       {/* Skills */}
       <div>
-        <label htmlFor="skills" className="block text-sm font-semibold text-slate-700">
-          Skills (comma-separated) *
+        <label htmlFor="skills" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
+          Core Competencies (Comma-separated) *
         </label>
-        <p className="text-xs text-slate-500 mb-1">e.g. Python, Django, React, AWS, Docker</p>
+        <p className="text-xs text-text-secondary mb-2">
+          List stated technical and professional capabilities (e.g. React, Node.js, Python, AWS)
+        </p>
         <input
           id="skills"
           type="text"
           value={skillsInput}
           onChange={(e) => setSkillsInput(e.target.value)}
           required
-          placeholder="React, TypeScript, Node.js"
-          className="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+          placeholder="React, TypeScript, Node.js, MongoDB"
+          className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
         />
       </div>
 
       {/* Experience */}
       <div>
-        <label htmlFor="experienceYears" className="block text-sm font-semibold text-slate-700">
-          Years of Experience *
+        <label htmlFor="experienceYears" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
+          Years of Verified Experience *
         </label>
         <input
           id="experienceYears"
@@ -160,23 +162,23 @@ export function CandidateForm({
           value={experienceYears}
           onChange={(e) => setExperienceYears(e.target.value)}
           required
-          className="mt-1 w-full px-3.5 py-2.5 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm"
+          className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
         />
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+      <div className="flex items-center justify-end gap-3 pt-6 border-t border-border-neutral">
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition"
+          className="px-4 py-2.5 border border-border-neutral rounded-xl text-xs font-semibold text-text-secondary hover:text-text-primary hover:bg-canvas transition"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-5 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-medium shadow-sm transition disabled:opacity-50"
+          className="px-5 py-2.5 bg-brand hover:bg-brand-hover active:bg-brand-active text-white rounded-xl text-xs font-semibold shadow-subtle transition disabled:opacity-50"
         >
           {isSubmitting ? 'Saving...' : submitButtonText}
         </button>

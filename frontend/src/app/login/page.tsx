@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { SignalLogo } from '../../components/SignalLogo';
 
 export default function LoginPage() {
   const { login, loading, error: authError } = useAuth();
@@ -32,107 +33,159 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-xl shadow-sm">
-            S
+    <div className="min-h-screen bg-canvas flex flex-col justify-between selection:bg-soft-violet selection:text-brand">
+      {/* Top Subtle Brand Bar */}
+      <header className="p-6 md:p-8 flex items-center justify-between max-w-7xl w-full mx-auto">
+        <div className="flex items-center gap-3">
+          <SignalLogo size={32} theme="light" />
+          <div className="flex flex-col">
+            <span className="font-bold text-base tracking-tight text-text-primary uppercase">
+              SkillSync
+            </span>
+            <span className="text-[11px] text-text-secondary font-medium tracking-tight">
+              Recruitment Intelligence, Connected.
+            </span>
           </div>
-          <span className="text-2xl font-bold tracking-tight text-slate-900">SkillSync</span>
         </div>
-        <h2 className="mt-4 text-center text-xl font-semibold tracking-tight text-slate-700">
-          Sign in to recruitment portal
-        </h2>
-        <p className="mt-1 text-center text-xs text-slate-500">
-          Admin and Recruiter authorized access only
-        </p>
-      </div>
+        <div className="hidden sm:flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-xs font-medium text-text-secondary">Security Protocol v1.0</span>
+        </div>
+      </header>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-sm border border-slate-200 rounded-xl sm:px-10">
-          {(formError || authError) && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center gap-2">
-              <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-              <span>{formError || authError}</span>
-            </div>
-          )}
-
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                Email address
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                  placeholder="admin@skillsync.com"
-                />
-              </div>
+      {/* Center Layout: Editorial Split / Hero */}
+      <main className="flex-1 flex items-center justify-center p-6 my-4">
+        <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Editorial Left Hero Narrative */}
+          <div className="lg:col-span-7 space-y-6 lg:pr-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft-violet text-brand text-xs font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand" />
+              Editorial Workspace × Cinematic Intelligence
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-                  placeholder="••••••••"
-                />
-              </div>
-            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary tracking-tight leading-[1.15]">
+              Recruitment decisions rooted in <span className="text-brand">connected evidence</span>.
+            </h1>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 transition"
-              >
-                {loading ? 'Authenticating...' : 'Sign In'}
-              </button>
-            </div>
-          </form>
-
-          {/* Quick testing helper */}
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 text-center">
-              Quick Test Credentials
+            <p className="text-base text-text-secondary leading-relaxed max-w-xl">
+              SkillSync connects candidates, vacancies, and Gemini AI analysis within a dual-world workspace. From intuitive pipeline administration to deep-dive Evidence Lens screening.
             </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => fillQuickAccount('admin@skillsync.com', 'Admin@123456')}
-                className="px-2 py-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-300 text-center transition"
-              >
-                Fill Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => fillQuickAccount('recruiter@skillsync.com', 'Recruiter@123456')}
-                className="px-2 py-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded border border-slate-300 text-center transition"
-              >
-                Fill Recruiter
-              </button>
+
+            <div className="pt-2 grid grid-cols-3 gap-4 border-t border-border-neutral">
+              <div>
+                <span className="text-2xl font-bold text-text-primary">3-Way</span>
+                <p className="text-xs text-text-secondary mt-0.5">Signal Architecture</p>
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-brand">Dark Mode</span>
+                <p className="text-xs text-text-secondary mt-0.5">Evidence Lens AI</p>
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-text-primary">100%</span>
+                <p className="text-xs text-text-secondary mt-0.5">Human Authority</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Card: The Clean Login Box */}
+          <div className="lg:col-span-5">
+            <div className="bg-surface rounded-2xl border border-border-neutral p-8 shadow-card relative">
+              <div className="mb-6">
+                <h2 className="text-xl font-bold text-text-primary">Sign in to SkillSync</h2>
+                <p className="text-xs text-text-secondary mt-1">
+                  Admin & Recruiter credential authentication
+                </p>
+              </div>
+
+              {(formError || authError) && (
+                <div className="mb-5 p-3.5 bg-soft-coral border border-coral/30 rounded-xl text-xs text-red-800 flex items-start gap-2.5">
+                  <svg className="w-4 h-4 flex-shrink-0 text-red-600 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <span>{formError || authError}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
+                    Authorized Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="name@skillsync.com"
+                    className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary mb-1.5">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="••••••••"
+                    className="w-full px-3.5 py-2.5 bg-canvas/40 border border-border-neutral rounded-xl text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition"
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3 px-4 rounded-xl text-sm font-semibold text-white bg-brand hover:bg-brand-hover active:bg-brand-active shadow-subtle transition flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {loading ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <span>Verifying credentials...</span>
+                      </>
+                    ) : (
+                      'Sign In to Workspace'
+                    )}
+                  </button>
+                </div>
+              </form>
+
+              {/* Quick Fill Credentials Bar */}
+              <div className="mt-6 pt-5 border-t border-border-neutral">
+                <span className="block text-[11px] font-semibold uppercase tracking-wider text-text-secondary text-center mb-2.5">
+                  Pre-configured Accounts
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fillQuickAccount('admin@skillsync.com', 'Admin@123456')}
+                    className="px-2.5 py-2 text-xs font-medium text-text-primary bg-canvas hover:bg-border-neutral/60 rounded-lg border border-border-neutral transition text-center"
+                  >
+                    Admin Account
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => fillQuickAccount('recruiter@skillsync.com', 'Recruiter@123456')}
+                    className="px-2.5 py-2 text-xs font-medium text-text-primary bg-canvas hover:bg-border-neutral/60 rounded-lg border border-border-neutral transition text-center"
+                  >
+                    Recruiter Account
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
+
+      {/* Subtle Footer */}
+      <footer className="p-6 text-center text-xs text-text-secondary max-w-7xl mx-auto w-full border-t border-border-neutral/60">
+        SkillSync Platform • Built with Next.js, Express, MongoDB Atlas & Google Gemini AI.
+      </footer>
     </div>
   );
 }

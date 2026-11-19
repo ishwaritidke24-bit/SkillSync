@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ProtectedRoute } from '../../../../components/ProtectedRoute';
-import { Navbar } from '../../../../components/Navbar';
+import { WorkspaceLayout } from '../../../../components/WorkspaceLayout';
 import { JobForm } from '../../../../components/JobForm';
 import { ApiService } from '../../../../services/api';
 import { Job, CreateJobPayload } from '../../../../types';
@@ -43,7 +43,7 @@ export default function EditJobPage() {
     setIsSubmitting(true);
     try {
       await ApiService.updateJob(id, payload);
-      setSuccessMessage('Job updated successfully! Redirecting...');
+      setSuccessMessage('Job position updated successfully! Redirecting...');
       setTimeout(() => {
         router.push(`/jobs/${id}`);
       }, 1000);
@@ -54,49 +54,52 @@ export default function EditJobPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-slate-50">
-        <Navbar />
-
-        <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-4 flex items-center gap-2 text-xs text-slate-500">
-            <Link href="/jobs" className="hover:underline">
-              Jobs
+      <WorkspaceLayout>
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="flex items-center gap-2 text-xs text-text-secondary">
+            <Link href="/jobs" className="hover:text-text-primary transition">
+              Positions
             </Link>
             <span>/</span>
-            <Link href={`/jobs/${id}`} className="hover:underline">
-              {job?.title || 'Job Details'}
+            <Link href={`/jobs/${id}`} className="hover:text-text-primary transition truncate max-w-[200px]">
+              {job?.title || 'Details'}
             </Link>
             <span>/</span>
-            <span className="text-slate-800 font-medium">Edit</span>
+            <span className="text-text-primary font-semibold">Edit</span>
           </div>
 
-          <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-            <div className="mb-6 border-b border-slate-100 pb-4">
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">Edit Job Opening</h1>
-              <p className="text-sm text-slate-500 mt-1">
-                Update job details, criteria or status.
+          <div className="bg-surface rounded-2xl border border-border-neutral p-6 sm:p-8 shadow-subtle">
+            <div className="border-b border-border-neutral pb-5 mb-6">
+              <span className="text-xs font-semibold uppercase tracking-wider text-brand">
+                Update Vacancy
+              </span>
+              <h1 className="text-2xl font-extrabold text-text-primary tracking-tight mt-1">
+                Edit Position.
+              </h1>
+              <p className="text-xs text-text-secondary mt-1">
+                Modify parameters, required competencies, or activation status.
               </p>
             </div>
 
             {loading && (
-              <div className="py-12 flex flex-col items-center justify-center">
-                <div className="w-8 h-8 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-xs text-slate-500 mt-3">Fetching job data...</p>
+              <div className="py-20 flex flex-col items-center justify-center">
+                <div className="w-8 h-8 border-3 border-brand border-t-transparent rounded-full animate-spin" />
+                <p className="text-xs font-medium text-text-secondary mt-3">Fetching job data...</p>
               </div>
             )}
 
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+              <div className="p-4 bg-soft-coral border border-coral/30 rounded-xl text-xs text-red-800">
                 {error}
               </div>
             )}
 
             {successMessage && (
-              <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-800 flex items-center gap-2">
+              <div className="mb-6 p-4 bg-soft-mint border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center gap-2.5">
                 <svg className="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span>{successMessage}</span>
+                <span className="font-medium">{successMessage}</span>
               </div>
             )}
 
@@ -111,13 +114,13 @@ export default function EditJobPage() {
                   status: job.status,
                 }}
                 onSubmit={handleUpdate}
-                submitButtonText="Update Job"
+                submitButtonText="Save Changes"
                 isSubmitting={isSubmitting}
               />
             )}
           </div>
-        </main>
-      </div>
+        </div>
+      </WorkspaceLayout>
     </ProtectedRoute>
   );
 }
