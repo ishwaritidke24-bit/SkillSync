@@ -56,20 +56,22 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
   ];
 
   return (
-    <div className="min-h-screen bg-canvas text-charcoal flex flex-col md:flex-row relative overflow-hidden">
-      {/* Chromatic Luxury Ambient Gradient Atmosphere Behind Entire App */}
+    <div className="min-h-screen flex flex-col md:flex-row relative overflow-hidden bg-transparent">
+      {/* Dynamic Multi-Tone Chromatic Atmosphere Behind All Content */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Top-Right Plum/Burgundy Ambient Radiance */}
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-plum-600/10 via-burgundy-700/10 to-transparent blur-3xl animate-synapse-glow" />
-        {/* Bottom-Left Rose/Violet Ambient Radiance */}
-        <div className="absolute -bottom-40 -left-40 w-[650px] h-[650px] rounded-full bg-gradient-to-tr from-violet-rich/10 via-magenta-rose/10 to-transparent blur-3xl" />
-        {/* Subtle Horizontal Gradient Shift Band */}
-        <div className="absolute top-1/3 left-1/4 w-[800px] h-[350px] bg-gradient-to-r from-royal/5 via-burgundy/5 to-transparent blur-3xl transform -rotate-12" />
+        {/* Soft Lavender Zone (Top-Right) */}
+        <div className="absolute -top-32 right-0 w-[700px] h-[700px] rounded-full bg-gradient-to-bl from-lavender/35 via-plum-300/20 to-transparent blur-3xl animate-synapse-glow" />
+        {/* Warm Muted Rose Zone (Mid-Left) */}
+        <div className="absolute top-1/4 -left-32 w-[650px] h-[650px] rounded-full bg-gradient-to-tr from-magenta-rose/25 via-burgundy-soft/30 to-transparent blur-3xl" />
+        {/* Soft Pale Mauve & Plum Undertone Zone (Bottom-Right) */}
+        <div className="absolute -bottom-40 right-1/4 w-[800px] h-[700px] rounded-full bg-gradient-to-tl from-plum-600/15 via-royal-light/15 to-transparent blur-3xl" />
+        {/* Central Champagne Shimmer */}
+        <div className="absolute top-1/2 left-1/3 w-[500px] h-[400px] bg-gradient-to-r from-champagne/10 via-lavender/10 to-transparent blur-3xl transform -rotate-12" />
       </div>
 
       {/* DESKTOP CHROMATIC LUXURY SIDEBAR (260px) */}
       <aside className="hidden md:flex flex-col w-[260px] bg-gradient-to-b from-[#1F102B] via-[#241333] to-[#17151F] text-lavender-soft border-r border-plum-800/40 flex-shrink-0 h-screen sticky top-0 z-40 select-none shadow-2xl">
-        {/* Brand Header with Rich Plum & Rose Accent */}
+        {/* Brand Header */}
         <div className="h-20 px-6 flex items-center justify-between border-b border-plum-700/30 bg-plum-950/40 backdrop-blur-md">
           <Link href="/dashboard" className="flex items-center gap-3.5 group">
             <div className="p-1.5 rounded-xl bg-plum-900/80 border border-plum-700/50 shadow-glow-violet transition-transform group-hover:scale-105">
@@ -105,7 +107,7 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
                 href={item.href}
                 className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-medium transition-all duration-200 group relative ${
                   isActive
-                    ? 'bg-gradient-to-r from-plum-700/80 to-burgundy-800/80 text-white font-semibold shadow-glow-magenta border border-magenta-muted/40'
+                    ? 'bg-gradient-to-r from-plum-700/85 to-burgundy-800/85 text-white font-semibold shadow-glow-magenta border border-magenta-muted/40'
                     : 'text-lavender/80 hover:text-white hover:bg-plum-800/40 hover:border-plum-700/30 border border-transparent'
                 }`}
               >
@@ -253,15 +255,15 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
         </div>
       )}
 
-      {/* MAIN WORKSPACE VIEWPORT (Tinted Mauve Canvas with Subtle Chromatic Depth) */}
+      {/* MAIN WORKSPACE VIEWPORT (Tinted Multi-Tone Mauve/Lavender Canvas with Radial Depth) */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10">
         {/* Top Floating Glass Command Ribbon */}
-        <header className="sticky top-0 z-30 h-16 px-6 lg:px-10 bg-canvas/80 backdrop-blur-md border-b border-neutral-muted/80 flex items-center justify-between">
+        <header className="sticky top-0 z-30 h-16 px-6 lg:px-10 bg-[#FAF2F7]/75 backdrop-blur-md border-b border-plum-200/50 flex items-center justify-between shadow-2xs">
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-charcoal-600">
-              <span className="w-2 h-2 rounded-full bg-magenta-muted"></span>
-              <span>ENVIRONMENT:</span>
-              <span className="px-2 py-0.5 rounded-md bg-plum-100 text-plum-900 font-semibold border border-plum-200">
+            <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-plum-950">
+              <span className="w-2 h-2 rounded-full bg-magenta-rose shadow-glow-rose"></span>
+              <span className="text-charcoal-600">ENVIRONMENT:</span>
+              <span className="px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-lavender/60 to-plum-100 text-plum-950 font-semibold border border-plum-300/40 shadow-2xs">
                 CHROMATIC WORKSPACE
               </span>
             </div>

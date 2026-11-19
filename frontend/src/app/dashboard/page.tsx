@@ -53,8 +53,8 @@ export default function DashboardPage() {
           </Link>
         }
       >
-        <div className="space-y-8">
-          {/* Chromatic Hero Banner (Rich Plum & Burgundy composition with Finaura editorial type) */}
+        <div className="space-y-9">
+          {/* ZONE 1: Chromatic Hero Banner (Rich Plum & Burgundy composition with Finaura editorial type) */}
           <div className="relative rounded-3xl bg-gradient-to-br from-plum-950 via-burgundy-900 to-royal-dark text-white p-8 sm:p-10 border border-plum-700/50 shadow-luxury-card overflow-hidden">
             {/* Atmospheric light leaks */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-magenta-muted/20 rounded-full blur-3xl pointer-events-none" />
@@ -109,110 +109,113 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Top Tri-Color Executive Metrics Grid */}
+          {/* ZONE 2: Individual Coordinated Gradient Composition Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Metric 1: Total Candidates (Plum Gradient Surface) */}
-            <div className="relative rounded-2xl bg-white/90 backdrop-blur-sm border border-border-luxury p-6 shadow-luxury-subtle overflow-hidden group hover:border-plum-400 transition-all">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-plum-100/60 rounded-full blur-xl group-hover:scale-125 transition-transform" />
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-plum-900">
+            {/* Card 1: Talent Directory (Lavender transitioning into Soft Violet with Plum Accents) */}
+            <div className="relative rounded-3xl bg-gradient-to-br from-[#EDE4F5] via-[#E4D5F2] to-[#D5BFEA] border border-plum-300/60 p-7 shadow-luxury-card overflow-hidden group hover:border-violet-rich/60 hover:shadow-glow-violet transition-all">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-violet-rich/15 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+              <div className="relative z-10 flex items-center justify-between mb-4">
+                <span className="font-mono text-[10.5px] font-bold uppercase tracking-widest text-plum-900/90">
                   Talent Directory
                 </span>
-                <span className="p-2 rounded-xl bg-plum-100 text-plum-900">
+                <span className="p-2.5 rounded-2xl bg-plum-900/10 text-plum-950 border border-plum-900/15 shadow-2xs">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 </span>
               </div>
-              <div className="font-editorial text-4xl font-bold text-plum-950 tracking-tight">
+              <div className="relative z-10 font-editorial text-5xl font-bold text-plum-950 tracking-tight leading-none mb-1">
                 {loading ? '—' : stats?.totalCandidates ?? 0}
               </div>
-              <div className="mt-2 flex items-center justify-between text-xs">
-                <span className="text-charcoal-600">Active Profiles Ingested</span>
-                <Link href="/candidates" className="font-mono text-magenta-muted hover:text-plum font-semibold">
+              <div className="relative z-10 mt-3 pt-3 border-t border-plum-900/15 flex items-center justify-between text-xs font-medium">
+                <span className="text-plum-900/80 font-mono text-[11px]">Active Profiles Ingested</span>
+                <Link href="/candidates" className="font-mono text-plum-950 hover:text-magenta-vivid font-bold flex items-center gap-1 transition-colors">
                   View Pool →
                 </Link>
               </div>
             </div>
 
-            {/* Metric 2: Active Openings (Burgundy & Rose Gradient Surface) */}
-            <div className="relative rounded-2xl bg-white/90 backdrop-blur-sm border border-border-luxury p-6 shadow-luxury-subtle overflow-hidden group hover:border-burgundy-400 transition-all">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-magenta-soft/80 rounded-full blur-xl group-hover:scale-125 transition-transform" />
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-burgundy-900">
+            {/* Card 2: Active Requisitions (Muted Rose transitioning into Warm Burgundy) */}
+            <div className="relative rounded-3xl bg-gradient-to-br from-[#FCE8F0] via-[#F4D1E2] to-[#E9B6CE] border border-burgundy-300/60 p-7 shadow-luxury-card overflow-hidden group hover:border-magenta-vivid/60 hover:shadow-glow-magenta transition-all">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-magenta-muted/20 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+              <div className="relative z-10 flex items-center justify-between mb-4">
+                <span className="font-mono text-[10.5px] font-bold uppercase tracking-widest text-burgundy-950/90">
                   Active Requisitions
                 </span>
-                <span className="p-2 rounded-xl bg-magenta-soft text-burgundy-800">
+                <span className="p-2.5 rounded-2xl bg-burgundy-900/10 text-burgundy-950 border border-burgundy-900/15 shadow-2xs">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </span>
               </div>
-              <div className="font-editorial text-4xl font-bold text-plum-950 tracking-tight">
+              <div className="relative z-10 font-editorial text-5xl font-bold text-burgundy-950 tracking-tight leading-none mb-1">
                 {loading ? '—' : stats?.activeJobs ?? 0}
               </div>
-              <div className="mt-2 flex items-center justify-between text-xs">
-                <span className="text-charcoal-600">Open for Candidate Ingestion</span>
-                <Link href="/jobs" className="font-mono text-magenta-muted hover:text-burgundy font-semibold">
+              <div className="relative z-10 mt-3 pt-3 border-t border-burgundy-900/15 flex items-center justify-between text-xs font-medium">
+                <span className="text-burgundy-950/80 font-mono text-[11px]">Open Vacancy Specs</span>
+                <Link href="/jobs" className="font-mono text-burgundy-950 hover:text-magenta-vivid font-bold flex items-center gap-1 transition-colors">
                   Manage Jobs →
                 </Link>
               </div>
             </div>
 
-            {/* Metric 3: Total Submissions (Royal Violet Gradient Surface) */}
-            <div className="relative rounded-2xl bg-white/90 backdrop-blur-sm border border-border-luxury p-6 shadow-luxury-subtle overflow-hidden group hover:border-royal-light transition-all">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-lavender-soft/80 rounded-full blur-xl group-hover:scale-125 transition-transform" />
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-widest text-royal-dark">
+            {/* Card 3: Applications Pipeline (Soft Plum transitioning into Dusty Rose & Champagne) */}
+            <div className="relative rounded-3xl bg-gradient-to-br from-[#EFE5F6] via-[#E7D6F0] to-[#DEC0DF] border border-royal/30 p-7 shadow-luxury-card overflow-hidden group hover:border-plum-500/60 hover:shadow-glow-rose transition-all">
+              <div className="absolute top-0 right-0 w-36 h-36 bg-plum-600/15 rounded-full blur-2xl group-hover:scale-125 transition-transform" />
+              <div className="relative z-10 flex items-center justify-between mb-4">
+                <span className="font-mono text-[10.5px] font-bold uppercase tracking-widest text-plum-950/90">
                   Applications Pipeline
                 </span>
-                <span className="p-2 rounded-xl bg-lavender-soft text-royal">
+                <span className="p-2.5 rounded-2xl bg-royal/10 text-royal-dark border border-royal/15 shadow-2xs">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                   </svg>
                 </span>
               </div>
-              <div className="font-editorial text-4xl font-bold text-plum-950 tracking-tight">
+              <div className="relative z-10 font-editorial text-5xl font-bold text-plum-950 tracking-tight leading-none mb-1">
                 {loading ? '—' : stats?.totalApplications ?? 0}
               </div>
-              <div className="mt-2 flex items-center justify-between text-xs">
-                <span className="text-charcoal-600">Submissions Tracked</span>
-                <Link href="/applications" className="font-mono text-magenta-muted hover:text-royal font-semibold">
+              <div className="relative z-10 mt-3 pt-3 border-t border-plum-900/15 flex items-center justify-between text-xs font-medium">
+                <span className="text-plum-900/80 font-mono text-[11px]">Submissions Tracked</span>
+                <Link href="/applications" className="font-mono text-plum-950 hover:text-magenta-vivid font-bold flex items-center gap-1 transition-colors">
                   Open Board →
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Pipeline Stage Distribution Card (Multi-stop Synapse / Vaultflow Visualizer) */}
-          <div className="rounded-3xl bg-white/90 backdrop-blur-md border border-border-luxury p-7 sm:p-8 shadow-luxury-subtle space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-border-luxury">
+          {/* ZONE 3: Dark Plum & Burgundy Gradient Feature Section (Synapse Pipeline Stage Flow) */}
+          <div className="rounded-3xl bg-gradient-to-br from-[#1F102B] via-[#2A153A] to-[#25102D] text-white p-8 sm:p-9 border border-plum-700/60 shadow-luxury-elevated relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-magenta-muted/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-1/3 w-96 h-40 bg-royal/20 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-plum-700/50 mb-6">
               <div>
-                <span className="font-mono text-[10px] uppercase font-bold tracking-wider text-magenta-muted">
-                  Pipeline Flow
+                <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-magenta-rose">
+                  Vaultflow AI Dispersion
                 </span>
-                <h3 className="font-editorial text-2xl font-bold text-plum-950 mt-0.5">
-                  Application Stage Dispersion
+                <h3 className="font-editorial text-2xl sm:text-3xl font-bold text-white mt-1">
+                  Application Stage Dispersion & Velocity
                 </h3>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-magenta-rose" />
-                <span className="font-mono text-xs text-charcoal-600">
-                  {stats?.totalApplications ?? 0} Total in Pipeline
+              <div className="flex items-center gap-2 bg-plum-950/80 px-3.5 py-1.5 rounded-full border border-plum-700/60 shadow-inner">
+                <span className="w-2 h-2 rounded-full bg-magenta-rose animate-pulse" />
+                <span className="font-mono text-xs text-lavender font-semibold">
+                  {stats?.totalApplications ?? 0} Active In Flow
                 </span>
               </div>
             </div>
 
             {/* Segmented Gradient Pipeline Bar */}
             {stats && stats.totalApplications > 0 ? (
-              <div className="space-y-4">
-                <div className="h-4 w-full bg-neutral-tinted rounded-full overflow-hidden flex shadow-inner border border-border-luxury">
+              <div className="relative z-10 space-y-6">
+                <div className="h-4 w-full bg-[#140A1C] rounded-full overflow-hidden flex shadow-inner border border-plum-700/60">
                   {stats.statusCounts.applied > 0 && (
                     <div
                       style={{
                         width: `${(stats.statusCounts.applied / stats.totalApplications) * 100}%`,
                       }}
-                      className="bg-lavender transition-all"
+                      className="bg-gradient-to-r from-lavender to-plum-300 transition-all"
                       title={`Applied: ${stats.statusCounts.applied}`}
                     />
                   )}
@@ -221,7 +224,7 @@ export default function DashboardPage() {
                       style={{
                         width: `${(stats.statusCounts.screening / stats.totalApplications) * 100}%`,
                       }}
-                      className="bg-royal transition-all"
+                      className="bg-gradient-to-r from-royal-light to-violet-rich transition-all"
                       title={`Screening: ${stats.statusCounts.screening}`}
                     />
                   )}
@@ -230,7 +233,7 @@ export default function DashboardPage() {
                       style={{
                         width: `${(stats.statusCounts.interview / stats.totalApplications) * 100}%`,
                       }}
-                      className="bg-magenta-muted transition-all"
+                      className="bg-gradient-to-r from-magenta-muted to-magenta-vivid transition-all"
                       title={`Interview: ${stats.statusCounts.interview}`}
                     />
                   )}
@@ -239,7 +242,7 @@ export default function DashboardPage() {
                       style={{
                         width: `${(stats.statusCounts.offered / stats.totalApplications) * 100}%`,
                       }}
-                      className="bg-magenta-rose transition-all"
+                      className="bg-gradient-to-r from-magenta-rose to-champagne transition-all"
                       title={`Offered: ${stats.statusCounts.offered}`}
                     />
                   )}
@@ -248,67 +251,67 @@ export default function DashboardPage() {
                       style={{
                         width: `${(stats.statusCounts.rejected / stats.totalApplications) * 100}%`,
                       }}
-                      className="bg-charcoal-600 transition-all"
+                      className="bg-charcoal-700 transition-all"
                       title={`Rejected: ${stats.statusCounts.rejected}`}
                     />
                   )}
                 </div>
 
-                {/* Stage Badges Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
-                  <div className="p-3 rounded-xl bg-neutral-tinted border border-border-luxury">
-                    <span className="font-mono text-[10px] uppercase text-charcoal-600 block">Applied</span>
-                    <span className="text-lg font-bold text-plum-950 font-mono">
+                {/* Stage Badges Grid with Rich Dark-Tone Glass Containers */}
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
+                  <div className="p-3.5 rounded-2xl bg-plum-950/70 border border-plum-700/50 shadow-sm">
+                    <span className="font-mono text-[10px] uppercase text-lavender/70 block">Applied</span>
+                    <span className="text-xl font-bold text-white font-mono mt-0.5 block">
                       {stats.statusCounts.applied}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-royal-soft border border-royal/20">
-                    <span className="font-mono text-[10px] uppercase text-royal block">Screening</span>
-                    <span className="text-lg font-bold text-royal font-mono">
+                  <div className="p-3.5 rounded-2xl bg-royal-dark/70 border border-violet-rich/30 shadow-sm">
+                    <span className="font-mono text-[10px] uppercase text-lavender block">Screening</span>
+                    <span className="text-xl font-bold text-lens-cyan font-mono mt-0.5 block">
                       {stats.statusCounts.screening}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-magenta-soft border border-magenta-muted/20">
-                    <span className="font-mono text-[10px] uppercase text-magenta-muted block">Interview</span>
-                    <span className="text-lg font-bold text-magenta-muted font-mono">
+                  <div className="p-3.5 rounded-2xl bg-burgundy-950/70 border border-magenta-muted/40 shadow-sm">
+                    <span className="font-mono text-[10px] uppercase text-magenta-rose block">Interview</span>
+                    <span className="text-xl font-bold text-magenta-rose font-mono mt-0.5 block">
                       {stats.statusCounts.interview}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-champagne-whisper border border-champagne/40">
-                    <span className="font-mono text-[10px] uppercase text-charcoal-800 block">Offered</span>
-                    <span className="text-lg font-bold text-burgundy font-mono">
+                  <div className="p-3.5 rounded-2xl bg-plum-900/60 border border-champagne/40 shadow-sm">
+                    <span className="font-mono text-[10px] uppercase text-champagne block">Offered</span>
+                    <span className="text-xl font-bold text-champagne font-mono mt-0.5 block">
                       {stats.statusCounts.offered}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-neutral-tinted border border-border-luxury">
-                    <span className="font-mono text-[10px] uppercase text-charcoal-600 block">Archived</span>
-                    <span className="text-lg font-bold text-charcoal-700 font-mono">
+                  <div className="p-3.5 rounded-2xl bg-charcoal-950/80 border border-charcoal-700 shadow-sm">
+                    <span className="font-mono text-[10px] uppercase text-lavender/40 block">Archived</span>
+                    <span className="text-xl font-bold text-lavender/60 font-mono mt-0.5 block">
                       {stats.statusCounts.rejected}
                     </span>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="py-8 text-center text-xs font-mono text-charcoal-600">
+              <div className="py-8 text-center text-xs font-mono text-lavender/60">
                 No pipeline submissions recorded yet. Create an application to activate stage flow analytics.
               </div>
             )}
           </div>
 
-          {/* Active Vacancies Directory Showcase */}
-          <div className="rounded-3xl bg-white/90 backdrop-blur-md border border-border-luxury p-7 sm:p-8 shadow-luxury-subtle space-y-6">
-            <div className="flex items-center justify-between pb-5 border-b border-border-luxury">
+          {/* ZONE 4: Soft Lavender & Pale Mauve Requisitions Section */}
+          <div className="rounded-3xl bg-gradient-to-br from-[#F5EEF7] via-[#EFE5F3] to-[#E9DCEE] border border-plum-300/60 p-8 sm:p-9 shadow-luxury-card space-y-6">
+            <div className="flex items-center justify-between pb-5 border-b border-plum-300/50">
               <div>
-                <span className="font-mono text-[10px] uppercase font-bold tracking-wider text-magenta-muted">
-                  Position Specs
+                <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-plum-900">
+                  Requisition Blueprints
                 </span>
-                <h3 className="font-editorial text-2xl font-bold text-plum-950 mt-0.5">
-                  Priority Requisitions
+                <h3 className="font-editorial text-2xl sm:text-3xl font-bold text-plum-950 mt-1">
+                  Priority Position Specifications
                 </h3>
               </div>
               <Link
                 href="/jobs"
-                className="font-mono text-xs font-semibold text-magenta-muted hover:text-plum transition-colors"
+                className="font-mono text-xs font-bold text-magenta-muted hover:text-plum transition-colors"
               >
                 All Openings ({recentJobs.length}) →
               </Link>
@@ -325,34 +328,34 @@ export default function DashboardPage() {
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {recentJobs.map((job) => (
                   <div
                     key={job._id}
-                    className="p-5 rounded-2xl bg-neutral-tinted/60 hover:bg-neutral-tinted border border-border-luxury hover:border-plum-400 transition-all flex flex-col justify-between gap-4 group"
+                    className="p-6 rounded-2xl bg-white/70 hover:bg-white/95 border border-plum-200/70 hover:border-plum-400 transition-all flex flex-col justify-between gap-4 group shadow-luxury-subtle hover:shadow-luxury-card"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2">
                         <Link
                           href={`/jobs/${job._id}`}
-                          className="font-bold text-sm text-plum-950 group-hover:text-magenta-muted transition-colors leading-snug"
+                          className="font-bold text-sm text-plum-950 group-hover:text-magenta-vivid transition-colors leading-snug"
                         >
                           {job.title}
                         </Link>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white text-plum-900 border border-border-luxury">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-plum-100 text-plum-900 border border-plum-300/60">
                           {job.status.toUpperCase()}
                         </span>
                       </div>
-                      <p className="text-xs text-charcoal-600 line-clamp-2 mt-2 leading-relaxed">
+                      <p className="text-xs text-charcoal-700 line-clamp-2 mt-2 leading-relaxed">
                         {job.description}
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-border-luxury/70 flex items-center justify-between text-[11px] font-mono text-charcoal-600">
+                    <div className="pt-3 border-t border-plum-200/60 flex items-center justify-between text-[11px] font-mono text-charcoal-600">
                       <span>{job.experienceMin}-{job.experienceMax} Years Exp</span>
                       <Link
                         href={`/jobs/${job._id}`}
-                        className="font-semibold text-plum-900 hover:text-magenta-vivid flex items-center gap-1"
+                        className="font-bold text-plum-950 hover:text-magenta-vivid flex items-center gap-1"
                       >
                         Inspect Specifications →
                       </Link>
