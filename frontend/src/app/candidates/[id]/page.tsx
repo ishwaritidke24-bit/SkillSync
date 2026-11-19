@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ProtectedRoute } from '../../../components/ProtectedRoute';
@@ -20,7 +20,7 @@ export default function CandidateDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
 
-  const fetchCandidateData = async () => {
+  const fetchCandidateData = useCallback(async () => {
     if (!id) return;
     try {
       setLoading(true);
@@ -36,11 +36,11 @@ export default function CandidateDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchCandidateData();
-  }, [id]);
+  }, [fetchCandidateData]);
 
   return (
     <ProtectedRoute>

@@ -200,7 +200,7 @@ export default function LoginPage() {
                 <div className="grid grid-cols-2 gap-2.5">
                   <button
                     type="button"
-                    onClick={() => fillQuickAccount('admin@skillsync.com', 'Admin@123')}
+                    onClick={() => fillQuickAccount('admin@skillsync.com', 'Admin@123456')}
                     className="p-2.5 text-left rounded-xl bg-neutral-tinted hover:bg-plum-100/60 border border-border-luxury transition text-xs group"
                   >
                     <div className="font-bold text-plum-950 group-hover:text-plum font-mono flex items-center justify-between">
@@ -214,7 +214,7 @@ export default function LoginPage() {
 
                   <button
                     type="button"
-                    onClick={() => fillQuickAccount('recruiter@skillsync.com', 'Recruiter@123')}
+                    onClick={() => fillQuickAccount('recruiter@skillsync.com', 'Recruiter@123456')}
                     className="p-2.5 text-left rounded-xl bg-neutral-tinted hover:bg-burgundy-soft/60 border border-border-luxury transition text-xs group"
                   >
                     <div className="font-bold text-plum-950 group-hover:text-burgundy font-mono flex items-center justify-between">

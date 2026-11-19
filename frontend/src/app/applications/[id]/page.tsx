@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ProtectedRoute } from '../../../components/ProtectedRoute';
@@ -30,7 +30,7 @@ export default function ApplicationDetailPage() {
   const [activeTab, setActiveTab] = useState<'screening' | 'questions'>('screening');
   const [filterMode, setFilterMode] = useState<'all' | 'verified' | 'unverified'>('all');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!id) return;
     try {
       setLoading(true);
@@ -60,11 +60,11 @@ export default function ApplicationDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, [fetchData]);
 
   const handleScreenResume = async () => {
     if (!id) return;
