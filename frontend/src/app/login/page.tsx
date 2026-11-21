@@ -42,45 +42,33 @@ export default function LoginPage() {
       </div>
 
       {/* Top Header Ribbon */}
-      <header className="relative z-10 p-6 md:p-8 flex items-center justify-between max-w-7xl w-full mx-auto">
-        <div className="flex items-center gap-3.5">
-          <div className="p-2 rounded-xl bg-plum-900 border border-plum-700/50 shadow-glow-violet">
-            <SignalLogo size={28} theme="dark" />
+      <header className="relative z-10 px-6 pt-5 pb-2 md:px-8 flex items-center justify-between max-w-7xl w-full mx-auto">
+        <div className="flex items-center gap-3">
+          <div className="p-1.5 rounded-xl bg-plum-900 border border-plum-700/50 shadow-glow-violet">
+            <SignalLogo size={24} theme="dark" />
           </div>
-          <div className="flex flex-col">
-            <span className="font-editorial text-2xl tracking-wide text-plum-950 font-bold leading-none">
-              SkillSync
-            </span>
-            <span className="font-mono text-[10px] text-magenta-muted tracking-widest uppercase font-semibold mt-1">
-              Chromatic Intelligence
-            </span>
-          </div>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface-tinted border border-border-luxury shadow-luxury-subtle">
-          <span className="w-2 h-2 rounded-full bg-magenta-rose animate-pulse" />
-          <span className="font-mono text-[11px] font-medium text-charcoal-700">
-            Auth Nexus v1.0 • Live Atlas Secure
+          <span className="font-editorial text-2xl tracking-wide text-plum-950 font-bold leading-none">
+            SkillSync
           </span>
         </div>
       </header>
 
       {/* Center Layout: Chromatic Editorial Split */}
-      <main className="relative z-10 flex-1 flex items-center justify-center p-6 my-4">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-6 py-2">
         <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Editorial Left Hero Narrative (Finaura x Vaultflow styling) */}
           <div className="lg:col-span-7 space-y-7 lg:pr-6">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-plum-100 via-magenta-soft to-lavender-soft border border-plum-200/60 text-plum-900 text-xs font-semibold shadow-luxury-subtle">
               <span className="w-2 h-2 rounded-full bg-magenta-vivid shadow-glow-rose" />
               <span className="font-mono tracking-wider text-[11px] uppercase">
-                Synapse × Finaura × Vaultflow
+                AI-Powered Evidence Screening & Candidate Intelligence
               </span>
             </div>
 
             <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl text-plum-950 tracking-tight leading-[1.08]">
-              Where recruitment intuition meets{' '}
+              Decode talent. Discover potential.{' '}
               <span className="italic bg-clip-text text-transparent bg-gradient-to-r from-plum via-burgundy to-magenta-vivid">
-                chromatic intelligence.
+                Make better hires.
               </span>
             </h1>
 
@@ -187,7 +175,7 @@ export default function LoginPage() {
                       <span>Authenticating Credentials...</span>
                     </>
                   ) : (
-                    <span>Enter Chromatic Intelligence →</span>
+                    <span>Continue to Dashboard →</span>
                   )}
                 </button>
               </form>

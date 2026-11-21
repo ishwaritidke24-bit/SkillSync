@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SkillSync – Chromatic Intelligence & Recruitment Analytics',
+  title: 'SkillSync – Connected Recruitment Intelligence & Analytics',
   description: 'Connected recruitment intelligence powered by multi-dimensional AI screening',
 };
 

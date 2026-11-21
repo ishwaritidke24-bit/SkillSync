@@ -88,10 +88,6 @@ export default function DashboardPage() {
 
             <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
               <div className="max-w-2xl space-y-3.5">
-                <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-magenta-rose text-xs font-mono shadow-inner">
-                  <span className="w-2 h-2 rounded-full bg-lens-cyan animate-pulse shadow-glow-rose" />
-                  <span className="font-semibold tracking-wide">EXECUTIVE INTELLIGENCE NEXUS • ATLAS & GEMINI ACTIVE</span>
-                </div>
                 <h1 className="font-editorial text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.08]">
                   Talent vectors, claim verification & pipeline velocity.
                 </h1>

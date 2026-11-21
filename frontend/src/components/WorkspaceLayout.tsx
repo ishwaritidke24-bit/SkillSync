@@ -82,7 +82,7 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
                 SkillSync
               </span>
               <span className="font-mono text-[9.5px] uppercase tracking-widest text-magenta-rose mt-1">
-                Chromatic AI
+                Intelligence Platform
               </span>
             </div>
           </Link>
@@ -264,7 +264,7 @@ export function WorkspaceLayout({ children, headerAction }: WorkspaceLayoutProps
               <span className="w-2 h-2 rounded-full bg-magenta-rose shadow-glow-rose"></span>
               <span className="text-charcoal-600">ENVIRONMENT:</span>
               <span className="px-2.5 py-0.5 rounded-lg bg-gradient-to-r from-lavender/60 to-plum-100 text-plum-950 font-semibold border border-plum-300/40 shadow-2xs">
-                CHROMATIC WORKSPACE
+                INTELLIGENCE WORKSPACE
               </span>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ProtectedRoute } from '../../../components/ProtectedRoute';
 import { SignalLogo } from '../../../components/SignalLogo';
+import { ResumeUploadModal } from '../../../components/ResumeUploadModal';
 import { ApiService } from '../../../services/api';
 import { Application, ScreeningResult, InterviewQuestion, ApplicationStatus } from '../../../types';
 
@@ -24,6 +25,7 @@ export default function ApplicationDetailPage() {
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   // Evidence Lens interactive node selection
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -319,9 +321,19 @@ export default function ApplicationDetailPage() {
                 <span className="w-2 h-2 rounded-full bg-red-400"></span>
                 {actionError}
               </span>
-              <button onClick={() => setActionError(null)} className="text-rose-300 hover:text-white text-sm font-bold">
-                ✕
-              </button>
+              <div className="flex items-center gap-2">
+                {actionError.includes('upload a PDF resume') && application?.candidate && (
+                  <button
+                    onClick={() => setShowUploadModal(true)}
+                    className="px-2.5 py-1 bg-magenta-rose/20 hover:bg-magenta-rose/30 text-white rounded-lg border border-magenta-rose/40 text-[11px] font-semibold transition"
+                  >
+                    Upload Resume Now →
+                  </button>
+                )}
+                <button onClick={() => setActionError(null)} className="text-rose-300 hover:text-white text-sm font-bold ml-2">
+                  ✕
+                </button>
+              </div>
             </div>
           )}
 
@@ -329,7 +341,7 @@ export default function ApplicationDetailPage() {
             <div className="py-32 flex flex-col items-center justify-center">
               <div className="w-10 h-10 border-2 border-magenta-rose border-t-transparent rounded-full animate-spin"></div>
               <p className="text-xs font-mono text-lavender/70 mt-4 tracking-wider">
-                INITIALIZING CHROMATIC INTELLIGENCE GRAPH...
+                INITIALIZING EVIDENCE GRAPH...
               </p>
             </div>
           )}
@@ -915,6 +927,21 @@ export default function ApplicationDetailPage() {
             </div>
           )}
         </main>
+
+        {/* Resume Upload Modal for immediate uploading */}
+        {application?.candidate && (
+          <ResumeUploadModal
+            candidateId={application.candidate._id}
+            candidateName={application.candidate.name}
+            isOpen={showUploadModal}
+            onClose={() => setShowUploadModal(false)}
+            onUploadSuccess={() => {
+              setShowUploadModal(false);
+              setActionSuccess('Resume uploaded successfully! You can now execute AI screening.');
+              fetchData();
+            }}
+          />
+        )}
       </div>
     </ProtectedRoute>
   );
