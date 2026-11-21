@@ -1,0 +1,681 @@
+{
+  "info": {
+    "_postman_id": "b3e94a82-7491-4e78-9e12-skillsync-api-v1",
+    "name": "SkillSync — AI Recruitment Intelligence API",
+    "description": "Complete Postman collection for SkillSync API covering Authentication, Jobs, Candidates, Resumes, Applications, AI-Assisted Screening (Gemini), and Recruitment Dashboard Analytics.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "candidateId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "jobId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "applicationId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "API Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verify that SkillSync backend service is online and healthy."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login (Admin) - Sets Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "    console.log('Admin AuthToken captured successfully.');",
+                  "}",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Token received and role is Admin', function () {",
+                  "    pm.expect(jsonData.data.user.role).to.eql('Admin');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@skillsync.com\",\n  \"password\": \"Admin@123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Authenticates as System Administrator and automatically saves the JWT token into {{authToken}} collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Login (Recruiter) - Sets Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "    console.log('Recruiter AuthToken captured successfully.');",
+                  "}",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Token received and role is Recruiter', function () {",
+                  "    pm.expect(jsonData.data.user.role).to.eql('Recruiter');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"recruiter@skillsync.com\",\n  \"password\": \"Recruiter@123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Authenticates as Recruiter and automatically saves the JWT token into {{authToken}} collection variable."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Retrieves the currently authenticated user's ID, email, name, and role."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Job Management",
+      "item": [
+        {
+          "name": "Create Job",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data._id) {",
+                  "    pm.collectionVariables.set('jobId', jsonData.data._id);",
+                  "    console.log('Job ID captured:', jsonData.data._id);",
+                  "}",
+                  "pm.test('Job created with 201 status', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Full-Stack Engineer\",\n  \"description\": \"Lead architecture and development of scalable web applications using TypeScript, Node.js, Next.js, and cloud database platforms.\",\n  \"requiredSkills\": [\n    \"TypeScript\",\n    \"Node.js\",\n    \"Next.js\",\n    \"MongoDB\",\n    \"REST APIs\"\n  ],\n  \"experienceMin\": 3,\n  \"experienceMax\": 6,\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"]
+            },
+            "description": "Creates a new job position specification. Captures the generated ID into {{jobId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "List All Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs"]
+            },
+            "description": "Returns all jobs sorted chronologically by creation date."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Job by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            },
+            "description": "Retrieves the full specification for a single job position."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Full-Stack Architect\",\n  \"description\": \"Direct full-stack platform development and engineering standards.\",\n  \"requiredSkills\": [\n    \"TypeScript\",\n    \"Node.js\",\n    \"Next.js\",\n    \"MongoDB\",\n    \"Docker\"\n  ],\n  \"experienceMin\": 4,\n  \"experienceMax\": 8\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}"]
+            },
+            "description": "Updates details, skills, or experience range of an existing job."
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Job Deactivation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/jobs/{{jobId}}/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["jobs", "{{jobId}}", "deactivate"]
+            },
+            "description": "Toggles job status between 'active' and 'deactivated'."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Candidate Management",
+      "item": [
+        {
+          "name": "Create Candidate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data._id) {",
+                  "    pm.collectionVariables.set('candidateId', jsonData.data._id);",
+                  "    console.log('Candidate ID captured:', jsonData.data._id);",
+                  "}",
+                  "pm.test('Candidate created with 201 status', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aarav Sharma\",\n  \"email\": \"aarav.sharma.test@skillsync.io\",\n  \"phone\": \"+91 98765 43210\",\n  \"skills\": [\n    \"TypeScript\",\n    \"React\",\n    \"Node.js\",\n    \"Express.js\",\n    \"MongoDB\"\n  ],\n  \"experienceYears\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates"]
+            },
+            "description": "Registers a new synthetic candidate profile into the database and captures the ID into {{candidateId}}."
+          },
+          "response": []
+        },
+        {
+          "name": "List Candidates (Search & Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/candidates?search=Aarav&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Aarav"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Searches candidates by name/email regex with pagination meta."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Candidate by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "{{candidateId}}"]
+            },
+            "description": "Retrieves candidate profile, attached resume metadata, and linked applications."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Candidate",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aarav Sharma\",\n  \"skills\": [\n    \"TypeScript\",\n    \"React\",\n    \"Next.js\",\n    \"Node.js\",\n    \"MongoDB\"\n  ],\n  \"experienceYears\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates/{{candidateId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "{{candidateId}}"]
+            },
+            "description": "Updates candidate information."
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Candidate Resume (PDF)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "resume",
+                  "type": "file",
+                  "src": [],
+                  "description": "Attach a valid PDF resume file (< 10MB)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/candidates/{{candidateId}}/resume",
+              "host": ["{{baseUrl}}"],
+              "path": ["candidates", "{{candidateId}}", "resume"]
+            },
+            "description": "Uploads and extracts plain text from a candidate PDF resume."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Applications Pipeline",
+      "item": [
+        {
+          "name": "Create Application",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data._id) {",
+                  "    pm.collectionVariables.set('applicationId', jsonData.data._id);",
+                  "    console.log('Application ID captured:', jsonData.data._id);",
+                  "}",
+                  "pm.test('Application created with 201 status', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"candidateId\": \"{{candidateId}}\",\n  \"jobId\": \"{{jobId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications"]
+            },
+            "description": "Links a candidate to a job opening and initiates the application lifecycle in 'applied' state."
+          },
+          "response": []
+        },
+        {
+          "name": "List All Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications"]
+            },
+            "description": "Retrieves all recruitment applications populated with candidate and job details."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Application by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/applications/{{applicationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", "{{applicationId}}"]
+            },
+            "description": "Retrieves single application detail."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"interview\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/applications/{{applicationId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", "{{applicationId}}", "status"]
+            },
+            "description": "Updates pipeline stage ('applied', 'screening', 'interview', 'offered', 'rejected')."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. AI Resume Screening & Interview Questions",
+      "item": [
+        {
+          "name": "Execute AI Resume Screening",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/screening/{{applicationId}}/screen",
+              "host": ["{{baseUrl}}"],
+              "path": ["screening", "{{applicationId}}", "screen"]
+            },
+            "description": "Triggers Google Gemini to analyze candidate's extracted resume text against job requirements, returning matching skills, missing skills, experience analysis, and recruiter decision support."
+          },
+          "response": []
+        },
+        {
+          "name": "Get AI Screening Result",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/screening/{{applicationId}}/result",
+              "host": ["{{baseUrl}}"],
+              "path": ["screening", "{{applicationId}}", "result"]
+            },
+            "description": "Retrieves the persisted AI screening analysis for an application."
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Tailored Interview Questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/screening/{{applicationId}}/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["screening", "{{applicationId}}", "questions"]
+            },
+            "description": "Triggers Google Gemini to synthesize technical and behavioral questions grounded specifically in the candidate's resume claims and job criteria."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Generated Interview Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/screening/{{applicationId}}/questions",
+              "host": ["{{baseUrl}}"],
+              "path": ["screening", "{{applicationId}}", "questions"]
+            },
+            "description": "Retrieves previously generated interview questions."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "6. Dashboard Analytics",
+      "item": [
+        {
+          "name": "Get Live Recruitment Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard", "stats"]
+            },
+            "description": "Aggregates real-time database counts for candidates, active jobs, total applications, and status counts."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
