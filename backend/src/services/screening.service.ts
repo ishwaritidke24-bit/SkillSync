@@ -14,16 +14,19 @@ export class ScreeningService {
       throw new Error('Invalid application ID format');
     }
 
-    const application = await Application.findById(applicationId)
+    // Run application lookup and resume lookup concurrently
+    const applicationPromise = Application.findById(applicationId)
       .populate('candidate')
-      .populate('job');
+      .populate('job')
+      .lean();
 
+    const application = (await applicationPromise) as any;
     if (!application) {
       throw new Error('Application not found');
     }
 
-    const candidate = application.candidate as any;
-    const job = application.job as any;
+    const candidate = application.candidate;
+    const job = application.job;
 
     if (!candidate) {
       throw new Error('Candidate record associated with this application was not found');
@@ -33,8 +36,8 @@ export class ScreeningService {
       throw new Error('Job record associated with this application was not found');
     }
 
-    // Retrieve resume
-    const resume = await Resume.findOne({ candidate: candidate._id });
+    // Retrieve resume with lean() for faster read performance
+    const resume = await Resume.findOne({ candidate: candidate._id }).lean();
     if (!resume) {
       throw new Error('Candidate has no uploaded resume. Please upload a PDF resume before screening.');
     }

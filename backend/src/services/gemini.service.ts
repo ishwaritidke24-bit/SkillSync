@@ -17,14 +17,21 @@ export interface GeminiQuestionOutput {
 }
 
 export class GeminiService {
+  private static cachedClient: GoogleGenAI | null = null;
+
   private static getClient(): GoogleGenAI {
+    if (this.cachedClient) {
+      return this.cachedClient;
+    }
+
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey || apiKey.trim() === '' || apiKey === 'your_google_gemini_api_key_here') {
       throw new Error(
         'Gemini API key is missing or not configured. Please set GEMINI_API_KEY in backend/.env'
       );
     }
-    return new GoogleGenAI({ apiKey });
+    this.cachedClient = new GoogleGenAI({ apiKey });
+    return this.cachedClient;
   }
 
   /**
@@ -51,6 +58,9 @@ STRICT RULES & SAFEGUARDS:
 4. You are providing decision-support analysis. Do NOT automatically reject or accept the candidate.
 5. You MUST return ONLY a valid, raw JSON object matching the exact schema specified below, with no markdown formatting or backticks.`;
 
+    // Compact whitespace while preserving exact semantic content
+    const sanitizedResume = params.resumeText.replace(/[ \t]+/g, ' ').replace(/\n\s*\n/g, '\n').trim().slice(0, 10000);
+
     const prompt = `Analyze this candidate's resume for the specified job position:
 
 --- JOB DETAILS ---
@@ -60,7 +70,7 @@ Required Skills: ${JSON.stringify(params.requiredSkills)}
 Required Experience: ${params.experienceMin} to ${params.experienceMax} years
 
 --- CANDIDATE RESUME CONTENT ---
-${params.resumeText.slice(0, 15000)}
+${sanitizedResume}
 
 --- REQUIRED JSON OUTPUT SCHEMA ---
 {
@@ -73,7 +83,7 @@ ${params.resumeText.slice(0, 15000)}
 
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.1-flash-lite',
         contents: prompt,
         config: {
           systemInstruction,
@@ -127,6 +137,9 @@ STRICT RULES & SAFEGUARDS:
 4. Provide context for each question explaining why it is being asked.
 5. Return ONLY a valid JSON object matching the schema below.`;
 
+    // Compact whitespace while preserving exact semantic content
+    const sanitizedResume = params.resumeText.replace(/[ \t]+/g, ' ').replace(/\n\s*\n/g, '\n').trim().slice(0, 10000);
+
     const prompt = `Generate 5 to 7 tailored interview questions for this applicant:
 
 --- JOB DETAILS ---
@@ -136,7 +149,7 @@ Required Skills: ${JSON.stringify(params.requiredSkills)}
 Required Experience: ${params.experienceMin} to ${params.experienceMax} years
 
 --- CANDIDATE RESUME ---
-${params.resumeText.slice(0, 15000)}
+${sanitizedResume}
 
 --- REQUIRED JSON OUTPUT SCHEMA ---
 {
@@ -151,7 +164,7 @@ ${params.resumeText.slice(0, 15000)}
 
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.1-flash-lite',
         contents: prompt,
         config: {
           systemInstruction,
