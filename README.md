@@ -149,8 +149,6 @@ Frontend runs at `http://localhost:3000`.
 
 ## Suggested Demo Video Walkthrough Sequence
 
-> **Demo Video Link:** `[Insert Recorded Demo Video Link Here - e.g. Loom, YouTube Unlisted, or Google Drive]`
-
 1. **Authentication:** Sign in with `recruiter@skillsync.com` / `Recruiter@123456`.
 2. **Dashboard Overview:** View live statistics (total candidates, active jobs, applications, and status counts).
 3. **Job Management:** Post a new job (e.g., "Full Stack Developer" with skills React, TypeScript, Node.js, MongoDB).
