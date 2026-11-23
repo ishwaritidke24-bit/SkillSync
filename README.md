@@ -4,6 +4,13 @@ SkillSync helps recruiters and administrators manage jobs, candidates, resumes, 
 
 ---
 
+## 🚀 Live Demo & Deployments
+
+- **Live Application (Frontend):** [https://frontend-two-azure-12.vercel.app/](https://frontend-two-azure-12.vercel.app/)
+- **Live API Health Check (Backend):** [https://backend-xi-ten-cte4c001mz.vercel.app/api/health](https://backend-xi-ten-cte4c001mz.vercel.app/api/health)
+
+---
+
 ## Key Features
 
 1. **Role-Based Authentication:** Secure JWT authentication and bcrypt password hashing with dedicated `Admin` and `Recruiter` roles.
