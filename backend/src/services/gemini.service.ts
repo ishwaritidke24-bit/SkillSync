@@ -90,25 +90,39 @@ ${sanitizedResume}
     let responseText = '';
 
     for (const model of this.CANDIDATE_MODELS) {
-      try {
-        const response = await ai.models.generateContent({
-          model,
-          contents: prompt,
-          config: {
-            systemInstruction,
-            responseMimeType: 'application/json',
-            temperature: 0.2,
-          },
-        });
+      // Retry each model up to 2 times with a short backoff on transient 503 high demand spikes
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+              systemInstruction,
+              responseMimeType: 'application/json',
+              temperature: 0.2,
+            },
+          });
 
-        const text = response.text ? response.text.trim() : '';
-        if (text) {
-          responseText = text;
-          break;
+          const text = response.text ? response.text.trim() : '';
+          if (text) {
+            responseText = text;
+            break;
+          }
+        } catch (err: any) {
+          lastError = err;
+          const is503 = err.status === 503 || err.message?.includes('503');
+          if (is503 && attempt < 2) {
+            console.warn(`[GeminiService.screenResume] Model ${model} returned 503 high demand, retrying in 1s (attempt ${attempt})...`);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          } else {
+            console.warn(`[GeminiService.screenResume] Model ${model} unavailable, trying fallback:`, err.message);
+            break;
+          }
         }
-      } catch (err: any) {
-        lastError = err;
-        console.warn(`[GeminiService.screenResume] Model ${model} unavailable, trying fallback:`, err.message);
+      }
+
+      if (responseText) {
+        break;
       }
     }
 
@@ -187,25 +201,39 @@ ${sanitizedResume}
     let responseText = '';
 
     for (const model of this.CANDIDATE_MODELS) {
-      try {
-        const response = await ai.models.generateContent({
-          model,
-          contents: prompt,
-          config: {
-            systemInstruction,
-            responseMimeType: 'application/json',
-            temperature: 0.3,
-          },
-        });
+      // Retry each model up to 2 times with a short backoff on transient 503 high demand spikes
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+              systemInstruction,
+              responseMimeType: 'application/json',
+              temperature: 0.3,
+            },
+          });
 
-        const text = response.text ? response.text.trim() : '';
-        if (text) {
-          responseText = text;
-          break;
+          const text = response.text ? response.text.trim() : '';
+          if (text) {
+            responseText = text;
+            break;
+          }
+        } catch (err: any) {
+          lastError = err;
+          const is503 = err.status === 503 || err.message?.includes('503');
+          if (is503 && attempt < 2) {
+            console.warn(`[GeminiService.generateInterviewQuestions] Model ${model} returned 503 high demand, retrying in 1s (attempt ${attempt})...`);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          } else {
+            console.warn(`[GeminiService.generateInterviewQuestions] Model ${model} unavailable, trying fallback:`, err.message);
+            break;
+          }
         }
-      } catch (err: any) {
-        lastError = err;
-        console.warn(`[GeminiService.generateInterviewQuestions] Model ${model} unavailable, trying fallback:`, err.message);
+      }
+
+      if (responseText) {
+        break;
       }
     }
 
