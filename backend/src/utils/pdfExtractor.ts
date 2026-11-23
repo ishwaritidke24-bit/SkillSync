@@ -30,6 +30,23 @@ export class PdfExtractor {
       (globalThis as any).Path2D = class Path2D {};
     }
 
+    // Set up pdfjs fake worker in Node.js/serverless environment:
+    // pdfjs-dist defaults workerSrc to './pdf.worker.mjs' which fails in bundled or serverless runtimes.
+    // Setting globalThis.pdfjsWorker attaches the WorkerMessageHandler in the main thread directly.
+    try {
+      // @ts-ignore
+      const workerModule = await import('pdfjs-dist/legacy/build/pdf.worker.mjs');
+      (globalThis as any).pdfjsWorker = workerModule;
+    } catch (_) {}
+
+    try {
+      // @ts-ignore
+      const pdfjsDist = await import('pdfjs-dist/legacy/build/pdf.mjs');
+      if (pdfjsDist?.GlobalWorkerOptions) {
+        pdfjsDist.GlobalWorkerOptions.workerSrc = '';
+      }
+    } catch (_) {}
+
     // Dynamic import to prevent top-level module evaluation crashes in serverless
     const pdfParseModule = await import('pdf-parse');
 
