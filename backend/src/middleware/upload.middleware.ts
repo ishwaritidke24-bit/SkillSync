@@ -1,11 +1,20 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 
-const uploadsDir = path.resolve(process.cwd(), 'uploads/resumes');
+// In serverless (Vercel / AWS Lambda), the only writable filesystem directory is os.tmpdir() (/tmp)
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const uploadsDir = isServerless
+  ? path.resolve(os.tmpdir(), 'skillsync_resumes')
+  : path.resolve(process.cwd(), 'uploads/resumes');
 
 if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+  try {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  } catch (err) {
+    console.error('Failed to create uploadsDir:', err);
+  }
 }
 
 const storage = multer.diskStorage({

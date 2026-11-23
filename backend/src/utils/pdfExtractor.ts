@@ -1,5 +1,4 @@
 import fs from 'fs';
-import * as pdfParseModule from 'pdf-parse';
 
 export interface ExtractedPdfResult {
   text: string;
@@ -19,6 +18,20 @@ export class PdfExtractor {
     if (header !== '%PDF-') {
       throw new Error('Invalid file content: Not a valid PDF file');
     }
+
+    // Polyfill DOMMatrix, ImageData, Path2D if missing in serverless environments (Node.js Linux)
+    if (typeof (globalThis as any).DOMMatrix === 'undefined') {
+      (globalThis as any).DOMMatrix = class DOMMatrix {};
+    }
+    if (typeof (globalThis as any).ImageData === 'undefined') {
+      (globalThis as any).ImageData = class ImageData {};
+    }
+    if (typeof (globalThis as any).Path2D === 'undefined') {
+      (globalThis as any).Path2D = class Path2D {};
+    }
+
+    // Dynamic import to prevent top-level module evaluation crashes in serverless
+    const pdfParseModule = await import('pdf-parse');
 
     try {
       const PDFParseClass = (pdfParseModule as any).PDFParse || (pdfParseModule as any).default?.PDFParse;

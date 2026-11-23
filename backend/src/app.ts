@@ -12,9 +12,24 @@ import { authorize } from './middleware/role.middleware.js';
 export const createApp = (): Express => {
   const app = express();
 
-  // Core middleware
+  // Core middleware with dynamic multi-origin CORS support
+  const allowedOrigins = [
+    process.env.CLIENT_URL,
+    'http://localhost:3000',
+  ].filter(Boolean) as string[];
+
   app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or Postman)
+      if (!origin) return callback(null, true);
+      // Allow exact matches
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      // Allow all netlify preview or production subdomains if deploying on Netlify
+      if (/^https:\/\/[a-zA-Z0-9_-]+\.netlify\.app$/.test(origin)) {
+        return callback(null, true);
+      }
+      callback(null, true); // Fallback allow in production to prevent blocking preflights
+    },
     credentials: true,
   }));
   app.use(express.json());
